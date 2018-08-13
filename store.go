@@ -7,7 +7,7 @@ import (
 
 type Store interface {
 	CreateDrink(drink *Drink) error
-	GetDrinks() ([]Drink, error)
+	GetDrinks() ([]*Drink, error)
 }
 
 type dbStore struct {
@@ -39,4 +39,10 @@ func (store *dbStore) GetDrinks() ([]*Drink, error) {
 	}
 
 	return drinks, nil
+}
+
+var store Store
+
+func InitStore(s Store) {
+	store = s
 }
