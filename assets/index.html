@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <form action="/drinks" method="POST">
+      <label name="oz">Ounces</label>
+      <input type="number" name="oz" step="any">
+      <br />
+      <label name="percent">Percent</label>
+      <input type="number" name="percent" step="any">
+      <br />
+      <input type="submit" value="Submit">
+    </form>
+    <table>
+      <tr>
+        <th>Oz</th>
+        <th>Percent</th>
+        <th>Standard Drinks</th>
+      </tr>
+    </table>
+
+    <script>
+      drinkTable = document.querySelector("table")
+
+      fetch("/drinks")
+        .then(response => response.json())
+        .then(drinkList => {
+          drinkList.forEach(drink => {
+            row = document.createElement("tr")
+            oz = document.createElement("td")
+            oz.innerHTML = drink.oz
+            percent = document.createElement("td")
+            percent.innerHTML = drink.percent
+            stddrink = document.createElement("td")
+            stddrink.innerHTML = drink.stddrink
+            row.appendChild(oz)
+            row.appendChild(percent)
+            row.appendChild(stddrink)
+            drinkTable.appendChild(row)
+          })
+        })
+    </script>
+  </body>
+</html>

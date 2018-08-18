@@ -25,6 +25,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/drinks", getDrinksHandler).Methods("GET")
 	router.HandleFunc("/drinks", createDrinkHandler).Methods("POST")
+	router.HandleFunc("/", getRootHandler).Methods("GET")
 	fmt.Println("Now serving on port 8000")
 
 	http.ListenAndServe(":8000", router)

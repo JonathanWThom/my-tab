@@ -1,8 +1,8 @@
 package main
 
 type Drink struct {
-	id       int
-	percent  float64
-	oz       float64
-	stddrink float64
+	ID       int     `json:"id"`
+	Percent  float64 `json:"percent"`
+	Oz       float64 `json:"oz"`
+	Stddrink float64 `json:"stddrink"`
 }

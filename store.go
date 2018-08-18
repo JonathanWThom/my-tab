@@ -15,9 +15,9 @@ type dbStore struct {
 }
 
 func (store *dbStore) CreateDrink(drink *Drink) error {
-	drink.stddrink = stddrink.Calculate(drink.percent, drink.oz)
+	drink.Stddrink = stddrink.Calculate(drink.Percent, drink.Oz)
 	_, err := store.db.Exec("INSERT INTO drinks(percent, oz, stddrink) VALUES($1, $2, $3)",
-		drink.percent, drink.oz, drink.stddrink)
+		drink.Percent, drink.Oz, drink.Stddrink)
 	return err
 }
 
@@ -31,7 +31,7 @@ func (store *dbStore) GetDrinks() ([]*Drink, error) {
 	drinks := []*Drink{}
 	for rows.Next() {
 		drink := &Drink{}
-		if err := rows.Scan(&drink.id, &drink.percent, &drink.oz, &drink.stddrink); err != nil {
+		if err := rows.Scan(&drink.ID, &drink.Percent, &drink.Oz, &drink.Stddrink); err != nil {
 			return nil, err
 		}
 
