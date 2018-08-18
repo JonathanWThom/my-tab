@@ -24,9 +24,15 @@ export default class DrinkList extends Component {
   }
 
   renderDrinks() {
+    const drinks = this.state.drinks.map((drink) =>
+      <div>
+        <p>{drink.oz} oz at {drink.percent}% is {drink.stddrink} standard drink</p>
+      </div>
+    );
+
     return (
       <div>
-        <h1>dranks are here</h1>
+        { drinks }
       </div>
     );
   }
