@@ -1,0 +1,38 @@
+{
+  "name": "my-tab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack-dev.config.js --open",
+    "build": "webpack --config ./webpack-prod.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonathanWThom/my-tab.git"
+  },
+  "author": "Jonathan Thom",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JonathanWThom/my-tab/issues"
+  },
+  "homepage": "https://github.com/JonathanWThom/my-tab#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-hot-loader": "^4.3.3"
+  }
+}
