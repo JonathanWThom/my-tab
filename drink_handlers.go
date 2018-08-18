@@ -13,7 +13,12 @@ func getRootHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func createDrinkHandler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	drink := Drink{}
 	err := r.ParseForm()
 	if err != nil {
@@ -50,6 +55,8 @@ func createDrinkHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDrinksHandler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+
 	drinks, err := store.GetDrinks()
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
