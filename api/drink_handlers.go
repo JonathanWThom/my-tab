@@ -3,15 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"net/http"
-	"strconv"
 )
-
-func getRootHandler(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("assets/index.html")
-	t.Execute(w, nil)
-}
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
@@ -19,39 +12,31 @@ func enableCors(w *http.ResponseWriter) {
 
 func createDrinkHandler(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	drink := Drink{}
-	err := r.ParseForm()
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	var drink Drink
 
-	percent, err := strconv.ParseFloat(r.Form.Get("percent"), 64)
+	err := json.NewDecoder(r.Body).Decode(&drink)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
+		//w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	drink.Percent = percent
-
-	oz, err := strconv.ParseFloat(r.Form.Get("oz"), 64)
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	drink.Oz = oz
+	drink.Percent = drink.Percent / 100
 
 	err = store.CreateDrink(&drink)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
+		//w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	/// this is not redirecting as it should
-	http.Redirect(w, r, "/", http.StatusCreated)
+	jsonDrink, err := json.Marshal(drink)
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+		//w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(jsonDrink)
 }
 
 func getDrinksHandler(w http.ResponseWriter, r *http.Request) {
