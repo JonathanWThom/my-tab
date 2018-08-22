@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import "./App.css";
 import {hot} from "react-hot-loader";
-import DrinkList from "./DrinkList.jsx"
+import Drinks from "./Drinks.jsx"
 
 class App extends Component{
   render(){
     return(
-      <DrinkList />
+      <div>
+        <Drinks />
+      </div>
     );
   }
 }
