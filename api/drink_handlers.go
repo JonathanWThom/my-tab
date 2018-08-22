@@ -22,14 +22,14 @@ func createDrinkHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	drink.Percent = drink.Percent / 100
 
-	err = store.CreateDrink(&drink)
+	returnedDrink, err := store.CreateDrink(&drink)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 		//w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	jsonDrink, err := json.Marshal(drink)
+	jsonDrink, err := json.Marshal(returnedDrink)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 		//w.WriteHeader(http.StatusInternalServerError)
