@@ -33,7 +33,12 @@ export default class Drinks extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target),
-      params = { oz: data.get("oz"), percent: data.get("percent") };
+      i = data.get("imbibedOn"),
+      params = {
+        oz: data.get("oz"),
+        percent: data.get("percent"),
+        imbibedOn: (new Date(i)).toISOString()
+      };
 
     fetch("http://localhost:8000/drinks", {
       method: "post",

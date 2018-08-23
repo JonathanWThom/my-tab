@@ -6,6 +6,7 @@ export default class DrinkForm extends Component {
     this.state = {
       oz: "",
       percent: "",
+      imbibedOn: "",
       error: null
     };
 
@@ -22,6 +23,8 @@ export default class DrinkForm extends Component {
     });
   }
 
+  /// TODO RESET PROPS ON SUBMIT
+
   render() {
     return(
       <form onSubmit={this.props.handleSubmit}>
@@ -30,6 +33,9 @@ export default class DrinkForm extends Component {
         <br />
         <label name="percent">Percent</label>
         <input value={this.state.percent} onChange={this.handleInputChange} name="percent" />
+        <br />
+        <label name="imbibedOn">Imbibed On</label>
+        <input value={this.state.imbibedOn} onChange={this.handleInputChange} type="datetime-local" name="imbibedOn" />
         <br />
         <input type="submit" value="Submit" />
       </form>
