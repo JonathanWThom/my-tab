@@ -16,19 +16,24 @@ type dbStore struct {
 
 func (store *dbStore) CreateDrink(drink *Drink) (*Drink, error) {
 	drink.Stddrink = stddrink.Calculate(drink.Percent, drink.Oz)
-	id := 0
+	var id int
+	var percent, oz, stddrink float64
+
 	sqlStatement := `
 		INSERT INTO drinks(percent, oz, stddrink)
 		VALUES ($1, $2, $3)
-		RETURNING id`
+		RETURNING id, percent, oz, stddrink`
 
 	err := store.db.QueryRow(sqlStatement,
-		drink.Percent, drink.Oz, drink.Stddrink).Scan(&id)
+		drink.Percent, drink.Oz, drink.Stddrink).Scan(&id, &percent, &oz, &stddrink)
 	if err != nil {
 		return nil, err
 	}
 
 	drink.ID = id
+	drink.Percent = percent
+	drink.Oz = oz
+	drink.Stddrink = stddrink
 	return drink, err
 }
 
