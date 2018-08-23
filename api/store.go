@@ -25,7 +25,9 @@ func (store *dbStore) CreateDrink(drink *Drink) (*Drink, error) {
 		RETURNING id, percent, oz, stddrink`
 
 	err := store.db.QueryRow(sqlStatement,
-		drink.Percent, drink.Oz, drink.Stddrink).Scan(&id, &percent, &oz, &stddrink)
+		drink.Percent,
+		drink.Oz,
+		drink.Stddrink).Scan(&id, &percent, &oz, &stddrink)
 	if err != nil {
 		return nil, err
 	}
