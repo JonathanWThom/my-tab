@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"github.com/jonathanwthom/my-tab/stddrink"
+	"github.com/jonathanwthom/my-tab/api/stddrink"
 	"time"
 )
 

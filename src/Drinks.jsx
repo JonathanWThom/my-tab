@@ -33,11 +33,19 @@ export default class Drinks extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target),
-      i = data.get("imbibedOn"),
-      params = {
-        oz: data.get("oz"),
-        percent: data.get("percent"),
-        imbibedOn: (new Date(i)).toISOString()
+      oz = data.get("oz"),
+      percent = data.get("percent"),
+      imbibedOn = data.get("imbibedOn");
+
+      if ([oz, percent, imbibedOn].includes("")) {
+        this.setState({ error: "Please fill out all fields" })
+        return
+      }
+
+      var params = {
+        oz: oz,
+        percent: percent,
+        imbibedOn: (new Date(imbibedOn)).toISOString()
       };
 
     fetch("http://localhost:8000/drinks", {
@@ -51,6 +59,7 @@ export default class Drinks extends Component {
   renderDrinks() {
     return (
       <div>
+        { this.state.error }
         <DrinkForm handleSubmit={this.handleSubmit} />
         <DrinkList drinks={this.state.drinks}/>
       </div>
