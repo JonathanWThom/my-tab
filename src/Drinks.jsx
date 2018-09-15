@@ -76,12 +76,11 @@ export default class Drinks extends Component {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
       body: JSON.stringify(params)
-    }).then(response => response.json())
+    }).then(res => this.handleStatus(res))
+      .then(response => response.json())
       .then(data => this.setState({ drinks: [...this.state.drinks, data] }))
-      .catch(error => this.setState({ error }));
+      .catch(error => this.handleErrors(error));
   }
-
-  /// this also does not handle errors well
 
   renderDrinks() {
     return (
