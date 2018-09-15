@@ -11,17 +11,15 @@ export default class Access extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.invalidateToken = this.invalidateToken.bind(this);
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target),
-      username = data.get("username"),
-      password = data.get("password");
-
-      var params = {
-        username: username,
-        password: password
+      params = {
+        username: data.get("username"),
+        password: data.get("password")
       };
 
     fetch("http://localhost:8000/login", {
@@ -41,10 +39,15 @@ export default class Access extends Component {
     this.setState({validToken: true})
   }
 
+  invalidateToken() {
+    localStorage.removeItem("token")
+    this.setState({validToken: false})
+  }
+
   render(){
     if (this.state.validToken) {
       return(
-        <Drinks />
+        <Drinks invalidateToken={this.invalidateToken}/>
       );
     } else {
       return(

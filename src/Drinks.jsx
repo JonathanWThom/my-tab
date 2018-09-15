@@ -13,6 +13,13 @@ export default class Drinks extends Component {
     this.getDrinks();
   }
 
+  handleStatus(response) {
+    if (!response.ok) {
+      throw Error(response.status);
+    }
+    return response;
+  }
+
   getDrinks() {
     const options = {
       headers: {
@@ -21,17 +28,21 @@ export default class Drinks extends Component {
     }
 
     fetch("http://localhost:8000/drinks", options)
+      .then(res => this.handleStatus(res))
       .then(res => res.json())
       .then(
         drinks => this.setState({ loading: false, drinks }),
-        error => this.setState({ loading: false, error })
+        error => this.handleErrors(error)
       );
-
-
-      /// I am not sure this handles errors very well
   }
 
-
+  handleErrors(error) {
+    if (error.message === "401") {
+      this.props.invalidateToken()
+    } else {
+      this.setState({ loading: false, error })
+    }
+  }
 
   renderLoading() {
     return <div>Loading...</div>;
