@@ -5,6 +5,11 @@ import Login from "./Login.jsx"
 export default class Access extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      validToken: this.validToken(),
+      error: null
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -21,19 +26,31 @@ export default class Access extends Component {
 
     fetch("http://localhost:8000/login", {
       method: "POST",
-      cors: "no-cors",
       body: JSON.stringify(params)
     }).then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => this.setToken(data.token))
       .catch(error => this.setState({ error }));
   }
 
+  validToken() {
+    return localStorage.getItem("token") !== null;
+  }
+
+  setToken(token) {
+    localStorage.setItem("token", token)
+    this.setState({validToken: true})
+  }
+
   render(){
-    return(
-      <div>
-        <Login handleSubmit={this.handleSubmit} />
+    if (this.state.validToken) {
+      return(
         <Drinks />
-      </div>
-    );
+      );
+    } else {
+      return(
+        <Login handleSubmit={this.handleSubmit} />
+      );
+    }
+
   }
 }
