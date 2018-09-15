@@ -26,6 +26,9 @@ export default class Drinks extends Component {
         drinks => this.setState({ loading: false, drinks }),
         error => this.setState({ loading: false, error })
       );
+
+
+      /// I am not sure this handles errors very well
   }
 
 
@@ -57,12 +60,17 @@ export default class Drinks extends Component {
       };
 
     fetch("http://localhost:8000/drinks", {
-      method: "post",
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      },
       body: JSON.stringify(params)
     }).then(response => response.json())
       .then(data => this.setState({ drinks: [...this.state.drinks, data] }))
       .catch(error => this.setState({ error }));
   }
+
+  /// this also does not handle errors well
 
   renderDrinks() {
     return (
