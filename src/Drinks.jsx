@@ -14,13 +14,21 @@ export default class Drinks extends Component {
   }
 
   getDrinks() {
-    fetch("http://localhost:8000/drinks")
+    const options = {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    }
+
+    fetch("http://localhost:8000/drinks", options)
       .then(res => res.json())
       .then(
         drinks => this.setState({ loading: false, drinks }),
         error => this.setState({ loading: false, error })
       );
   }
+
+
 
   renderLoading() {
     return <div>Loading...</div>;
