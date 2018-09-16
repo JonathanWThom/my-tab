@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Drinks from "./Drinks.jsx"
 import Login from "./Login.jsx"
 import Logout from "./Logout.jsx"
+import SignUp from "./SignUp.jsx"
 
 export default class Access extends Component {
   constructor(props) {
@@ -11,11 +12,20 @@ export default class Access extends Component {
       error: null
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
     this.invalidateToken = this.invalidateToken.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
   }
 
-  handleSubmit(event) {
+  handleLogin(event) {
+    this.submitUserForm(event, "http://localhost:8000/login")
+  }
+
+  handleSignUp(event) {
+    this.submitUserForm(event, "http://localhost:8000/signup")
+  }
+
+  submitUserForm(event, path) {
     event.preventDefault();
     const data = new FormData(event.target),
       params = {
@@ -23,7 +33,7 @@ export default class Access extends Component {
         password: data.get("password")
       };
 
-    fetch("http://localhost:8000/login", {
+    fetch(path, {
       method: "POST",
       body: JSON.stringify(params)
     }).then(response => response.json())
@@ -55,7 +65,10 @@ export default class Access extends Component {
       );
     } else {
       return(
-        <Login handleSubmit={this.handleSubmit} />
+        <div>
+          <SignUp handleSubmit={this.handleSignUp} />
+          <Login handleSubmit={this.handleLogin} />
+        </div>
       );
     }
 
