@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import "../node_modules/milligram/dist/milligram.min.css";
+
 import "./App.css";
 import {hot} from "react-hot-loader";
 import Access from "./Access.jsx"
