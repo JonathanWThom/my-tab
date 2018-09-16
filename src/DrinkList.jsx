@@ -7,7 +7,6 @@ export default class DrinkList extends Component {
   }
 
   formattedImbibedOn(drink) {
-    console.log(drink.imbibedOn)
     return moment(drink.imbibedOn).format("MMMM Do, YYYY");
   }
 

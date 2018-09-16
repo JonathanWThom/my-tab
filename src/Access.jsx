@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Drinks from "./Drinks.jsx"
 import Login from "./Login.jsx"
+import Logout from "./Logout.jsx"
 
 export default class Access extends Component {
   constructor(props) {
@@ -47,7 +48,10 @@ export default class Access extends Component {
   render(){
     if (this.state.validToken) {
       return(
-        <Drinks invalidateToken={this.invalidateToken}/>
+        <div>
+          <Logout invalidateToken={this.invalidateToken}/>
+          <Drinks invalidateToken={this.invalidateToken}/>
+        </div>
       );
     } else {
       return(
