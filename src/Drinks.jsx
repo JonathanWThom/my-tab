@@ -13,6 +13,7 @@ export default class Drinks extends Component {
     this.getDrinks();
   }
 
+  // TODO: Move to utils
   handleStatus(response) {
     if (!response.ok) {
       throw Error(response.status);
@@ -40,7 +41,7 @@ export default class Drinks extends Component {
     if (error.message === "401") {
       this.props.invalidateToken()
     } else {
-      this.setState({ loading: false, error })
+      this.setState({ loading: false, error: error.message })
     }
   }
 
@@ -84,6 +85,7 @@ export default class Drinks extends Component {
 
   resetState(data, event) {
     this.setState({ drinks: [...this.state.drinks, data] })
+    // this can break
     event.target.reset();
   }
 

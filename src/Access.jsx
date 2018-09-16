@@ -25,6 +25,15 @@ export default class Access extends Component {
     this.submitUserForm(event, "http://localhost:8000/signup")
   }
 
+  // TODO: Move to utils
+  handleStatus(response) {
+    if (!response.ok) {
+      throw Error(response.status);
+    }
+    return response;
+  }
+
+
   submitUserForm(event, path) {
     event.preventDefault();
     const data = new FormData(event.target),
@@ -36,9 +45,10 @@ export default class Access extends Component {
     fetch(path, {
       method: "POST",
       body: JSON.stringify(params)
-    }).then(response => response.json())
+    }).then(response => this.handleStatus(response))
+      .then(response => response.json())
       .then(data => this.setToken(data.token))
-      .catch(error => this.setState({ error }));
+      .catch(error => this.setState({ error: error.message }));
   }
 
   validToken() {
@@ -66,6 +76,7 @@ export default class Access extends Component {
     } else {
       return(
         <div>
+          { this.state.error }
           <SignUp handleSubmit={this.handleSignUp} />
           <Login handleSubmit={this.handleLogin} />
         </div>
