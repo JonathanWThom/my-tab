@@ -26,10 +26,20 @@ export default class Login extends Component {
     return(
       <form onSubmit={this.props.handleSubmit}>
         <label name="username">Username</label>
-        <input value={this.state.username} onChange={this.handleInputChange} name="username" />
+        <input
+          value={this.state.username}
+          onChange={this.handleInputChange}
+          name="username"
+          type="text"
+          />
         <br />
-        <label name="password">Percent</label>
-        <input type="password" value={this.state.password} onChange={this.handleInputChange} name="password" />
+        <label name="password">Password</label>
+        <input
+          type="password"
+          value={this.state.password}
+          onChange={this.handleInputChange}
+          name="password"
+          />
         <br />
         <input type="submit" value="Submit" />
       </form>

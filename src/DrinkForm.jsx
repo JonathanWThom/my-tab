@@ -29,13 +29,28 @@ export default class DrinkForm extends Component {
     return(
       <form onSubmit={this.props.handleSubmit}>
         <label name="oz">Ounces</label>
-        <input value={this.state.oz} onChange={this.handleInputChange} name="oz" />
+        <input
+          value={this.state.oz}
+          onChange={this.handleInputChange}
+          name="oz"
+          type="number"
+          />
         <br />
         <label name="percent">Percent</label>
-        <input value={this.state.percent} onChange={this.handleInputChange} name="percent" />
+        <input
+          value={this.state.percent}
+          onChange={this.handleInputChange}
+          name="percent"
+          type="number"
+          />
         <br />
         <label name="imbibedOn">Imbibed On</label>
-        <input value={this.state.imbibedOn} onChange={this.handleInputChange} type="datetime-local" name="imbibedOn" />
+        <input
+          value={this.state.imbibedOn}
+          onChange={this.handleInputChange}
+          type="date"
+          name="imbibedOn"
+          />
         <br />
         <input type="submit" value="Submit" />
       </form>

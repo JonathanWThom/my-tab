@@ -8,7 +8,7 @@ import Access from "./Access.jsx"
 class App extends Component {
   render(){
     return(
-      <div>
+      <div className="container">
         <Access />
       </div>
     );
