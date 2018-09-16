@@ -78,8 +78,13 @@ export default class Drinks extends Component {
       body: JSON.stringify(params)
     }).then(res => this.handleStatus(res))
       .then(response => response.json())
-      .then(data => this.setState({ drinks: [...this.state.drinks, data] }))
+      .then(data => this.resetState(data, event))
       .catch(error => this.handleErrors(error));
+  }
+
+  resetState(data, event) {
+    this.setState({ drinks: [...this.state.drinks, data] })
+    event.target.reset();
   }
 
   renderDrinks() {

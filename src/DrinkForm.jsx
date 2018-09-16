@@ -23,8 +23,6 @@ export default class DrinkForm extends Component {
     });
   }
 
-  /// TODO RESET PROPS ON SUBMIT
-
   render() {
     return(
       <form onSubmit={this.props.handleSubmit}>
