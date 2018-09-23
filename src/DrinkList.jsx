@@ -21,9 +21,19 @@ export default class DrinkList extends Component {
         </p>
       </div>
     )
+    const totalCopy = `${this.props.total} total standard drinks`;
+    const perDayCopy = `${this.props.perDay} standard drinks per day`;
 
     return(
-      <div>{ drinks }</div>
+      <div>
+        <p>
+          { totalCopy }
+        </p>
+        <p>
+          { perDayCopy }
+        </p>
+        <div>{ drinks }</div>
+      </div>
     );
   }
 }

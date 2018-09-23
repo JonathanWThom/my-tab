@@ -5,12 +5,30 @@ import DrinkList from "./DrinkList.jsx";
 export default class Drinks extends Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true };
+    this.state = {
+      loading: true,
+      oz: "",
+      percent: "",
+      imbibedOn: "",
+      error: null
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
     this.getDrinks();
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   }
 
   // TODO: Move to utils
@@ -31,10 +49,17 @@ export default class Drinks extends Component {
     fetch("http://localhost:8000/drinks", options)
       .then(res => this.handleStatus(res))
       .then(res => res.json())
-      .then(
-        drinks => this.setState({ loading: false, drinks }),
-        error => this.handleErrors(error)
-      );
+      .then(data => this.handleDrinksData(data))
+      .catch(error => this.handleErrors(error));
+  }
+
+  handleDrinksData(data) {
+    this.setState({
+      loading: false,
+      drinks: data.drinks,
+      perDay: data.stddrinks_per_day,
+      total: data.total_stddrinks
+    })
   }
 
   handleErrors(error) {
@@ -55,21 +80,23 @@ export default class Drinks extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.target),
+    const target = event.target;
+
+    const data = new FormData(target),
       oz = data.get("oz"),
       percent = data.get("percent"),
       imbibedOn = data.get("imbibedOn");
 
-      if ([oz, percent, imbibedOn].includes("")) {
-        this.setState({ error: "Please fill out all fields" })
-        return
-      }
+    if ([oz, percent, imbibedOn].includes("")) {
+      this.setState({ error: "Please fill out all fields" })
+      return
+    }
 
-      var params = {
-        oz: oz,
-        percent: percent,
-        imbibedOn: (new Date(imbibedOn)).toISOString()
-      };
+    const params = {
+      oz: oz,
+      percent: percent,
+      imbibedOn: (new Date(imbibedOn)).toISOString()
+    };
 
     fetch("http://localhost:8000/drinks", {
       method: "POST",
@@ -79,22 +106,36 @@ export default class Drinks extends Component {
       body: JSON.stringify(params)
     }).then(res => this.handleStatus(res))
       .then(response => response.json())
-      .then(data => this.resetState(data, event))
+      .then(data => this.handleFormSubmit(target))
       .catch(error => this.handleErrors(error));
   }
 
-  resetState(data, event) {
-    this.setState({ drinks: [...this.state.drinks, data] })
-    // this can break
-    event.target.reset();
+  handleFormSubmit(target) {
+    this.setState({
+      oz: "",
+      percent: "",
+      imbibedOn: ""
+    })
+    this.getDrinks()
   }
 
   renderDrinks() {
     return (
       <div>
         { this.state.error }
-        <DrinkForm handleSubmit={this.handleSubmit} />
-        <DrinkList drinks={this.state.drinks}/>
+        <DrinkForm
+          handleSubmit={this.handleSubmit}
+          handleInputChange={this.handleInputChange}
+          oz={this.state.oz}
+          percent={this.state.percent}
+          imbibedOn={this.state.imbibedOn}
+          error={this.state.error}
+        />
+        <DrinkList
+          drinks={this.state.drinks}
+          perDay={this.state.perDay}
+          total={this.state.total}
+        />
       </div>
     );
   }
