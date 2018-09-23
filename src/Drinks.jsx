@@ -121,21 +121,25 @@ export default class Drinks extends Component {
 
   renderDrinks() {
     return (
-      <div>
+      <div className="row">
         { this.state.error }
-        <DrinkForm
-          handleSubmit={this.handleSubmit}
-          handleInputChange={this.handleInputChange}
-          oz={this.state.oz}
-          percent={this.state.percent}
-          imbibedOn={this.state.imbibedOn}
-          error={this.state.error}
-        />
-        <DrinkList
-          drinks={this.state.drinks}
-          perDay={this.state.perDay}
-          total={this.state.total}
-        />
+        <div className="column">
+          <DrinkList
+            drinks={this.state.drinks}
+            perDay={this.state.perDay}
+            total={this.state.total}
+          />
+        </div>
+        <div className="column">
+          <DrinkForm
+            handleSubmit={this.handleSubmit}
+            handleInputChange={this.handleInputChange}
+            oz={this.state.oz}
+            percent={this.state.percent}
+            imbibedOn={this.state.imbibedOn}
+            error={this.state.error}
+          />
+        </div>
       </div>
     );
   }
