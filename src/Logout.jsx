@@ -7,7 +7,7 @@ export default class Logout extends Component {
 
   render() {
     return(
-      <a className="button button-clear" onClick={this.props.invalidateToken}>Logout</a>
+      <a className="button button-clear logout-button" onClick={this.props.invalidateToken}>Logout</a>
     )
   }
 }
