@@ -24,5 +24,12 @@ input[type="date"] {
 .header {
   border-bottom: 1px solid #9b4dca;
   margin-bottom: 20px;
+}
+
+.text-align-right {
   text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
 }

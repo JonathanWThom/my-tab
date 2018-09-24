@@ -65,11 +65,14 @@ export default class Access extends Component {
     this.setState({validToken: false})
   }
 
+  // TODO: Refactor header into component
+  // TODO: Refactor SignUp/Login, they are basically the same
+
   render(){
     if (this.state.validToken) {
       return(
         <div>
-          <div className="header">
+          <div className="header text-align-right">
             <h3 className="float-left">My Tab</h3>
             <Logout invalidateToken={this.invalidateToken}/>
           </div>
@@ -79,9 +82,10 @@ export default class Access extends Component {
     } else {
       return(
         <div>
-          <div>
-            <h3 className="float-left">My Tab</h3>
+          <div className="header text-align-left">
+            <h3>My Tab</h3>
           </div>
+          <p>Judgement free alcohol consumption tracker</p>
           { this.state.error }
           <SignUp handleSubmit={this.handleSignUp} />
           <Login handleSubmit={this.handleLogin} />
