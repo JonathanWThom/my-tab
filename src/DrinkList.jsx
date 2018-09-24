@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
+import DrinkSortingForm from "./DrinkSortingForm.jsx";
 
 export default class DrinkList extends Component {
   dateRange() {
@@ -39,13 +40,20 @@ export default class DrinkList extends Component {
         <strong>Average Standard Drinks Per Day: </strong>
         {this.roundToTwo(this.props.perDay)}
       </p>;
+    let sortingForm;
+    if (this.props.drinks.length > 0) {
+      sortingForm = <DrinkSortingForm drinks={this.props.drinks} />
+    }
 
 
     return(
       <div>
+          <h4>Summary</h4>
           { dateRangeCopy }
           { totalCopy }
           { perDayCopy }
+          <h4>Drinks</h4>
+          { sortingForm }
         <table>
           <thead>
             <tr>

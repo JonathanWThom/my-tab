@@ -92,6 +92,5 @@ export default class Access extends Component {
         </div>
       );
     }
-
   }
 }
