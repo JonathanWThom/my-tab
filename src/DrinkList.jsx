@@ -25,14 +25,12 @@ export default class DrinkList extends Component {
 
   render() {
     const drinks = this.props.drinks.map((drink) =>
-      <div key={drink.id}>
-        <p>
-          {this.formattedImbibedOn(drink)}: &nbsp;
-          {drink.oz} oz at {drink.percent * 100}% is &nbsp;
-          {this.roundToTwo(drink.stddrink)} standard &nbsp;
-          { this.drinkCopy(drink) }
-        </p>
-      </div>
+      <tr key={drink.id}>
+        <td>{this.formattedImbibedOn(drink)}</td>
+        <td>{drink.oz}</td>
+        <td>{drink.percent * 100}%</td>
+        <td>{this.roundToTwo(drink.stddrink)}</td>
+      </tr>
     )
     const dateRangeCopy = <p><strong>Date Range: </strong>{this.dateRange()}</p>
     const totalCopy = <p><strong>Total Standard Drinks: </strong>{this.roundToTwo(this.props.total)}</p>;
@@ -48,7 +46,19 @@ export default class DrinkList extends Component {
           { dateRangeCopy }
           { totalCopy }
           { perDayCopy }
-        <div>{ drinks }</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Imbibed On</th>
+              <th>Ounces</th>
+              <th>Percent</th>
+              <th>Standard Drinks</th>
+            </tr>
+          </thead>
+          <tbody>
+            { drinks }
+          </tbody>
+        </table>
       </div>
     );
   }
