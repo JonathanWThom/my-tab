@@ -69,13 +69,19 @@ export default class Access extends Component {
     if (this.state.validToken) {
       return(
         <div>
-          <Logout invalidateToken={this.invalidateToken}/>
+          <div className="header">
+            <h3 className="float-left">My Tab</h3>
+            <Logout invalidateToken={this.invalidateToken}/>
+          </div>
           <Drinks invalidateToken={this.invalidateToken}/>
         </div>
       );
     } else {
       return(
         <div>
+          <div>
+            <h3 className="float-left">My Tab</h3>
+          </div>
           { this.state.error }
           <SignUp handleSubmit={this.handleSignUp} />
           <Login handleSubmit={this.handleLogin} />

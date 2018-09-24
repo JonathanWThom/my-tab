@@ -19,5 +19,10 @@ input[type="date"] {
 
 .logout-button {
   padding: 0;
-  float: right;
+}
+
+.header {
+  border-bottom: 1px solid #9b4dca;
+  margin-bottom: 20px;
+  text-align: right;
 }
