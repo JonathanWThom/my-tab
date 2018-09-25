@@ -1,40 +1,29 @@
 import React, { Component } from "react";
-import moment from "moment";
 
 export default class DrinkSortingForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-
-    //this.handleSignUp = this.handleSignUp.bind(this);
-  }
-
-  formatForInput(value) {
-    return moment(value).format("YYYY-MM-DD")
-  }
-
-  handleInputChange() {
-    console.log("changed")
-  }
-
-
   render(){
-    const drinks = this.props.drinks;
-    const firstDate = this.formatForInput(drinks[0].imbibedOn);
-    const lastDate = this.formatForInput(drinks[drinks.length - 1].imbibedOn);
-
     return(
       <div>
-        <form>
+        <form onSubmit={this.props.handleSortingFormSubmit}>
           <div className="row">
             <div className="column">
-              <input type="date" value={firstDate} onChange={this.handleInputChange} />
+              <input
+                type="date"
+                value={this.props.firstDate}
+                onChange={this.props.handleInputChange}
+                name="firstDate"
+              />
             </div>
             <div className="column">
-              <input type="date" value={lastDate} onChange={this.handleInputChange} />
+              <input
+                type="date"
+                value={this.props.lastDate}
+                onChange={this.props.handleInputChange}
+                name="lastDate"
+              />
             </div>
             <div className="column">
-              <button>Update</button>
+              <input type="submit" value="Update Range" />
             </div>
           </div>
         </form>

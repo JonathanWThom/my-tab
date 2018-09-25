@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DrinkForm from "./DrinkForm.jsx";
 import DrinkList from "./DrinkList.jsx";
+import moment from "moment";
 
 export default class Drinks extends Component {
   constructor(props) {
@@ -10,11 +11,14 @@ export default class Drinks extends Component {
       oz: "",
       percent: "",
       imbibedOn: "",
-      error: null
+      error: null,
+      firstDate: "",
+      lastDate: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSortingFormSubmit = this.handleSortingFormSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +33,33 @@ export default class Drinks extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  handleSortingFormSubmit(event) {
+    event.preventDefault()
+
+    const target = event.target;
+    const data = new FormData(target);
+    const params = {
+      start: data.get("firstDate"),
+      end: data.get("lastDate")
+    };
+
+    const url = new URL("http://localhost:8000/drinks");
+    url.search = new URLSearchParams(params);
+
+    // refactor into shared function
+    const options = {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    }
+
+    fetch(url, options)
+      .then(res => this.handleStatus(res))
+      .then(res => res.json())
+      .then(data => this.handleSortingData(data))
+      .catch(error => this.handleErrors(error));
   }
 
   // TODO: Move to utils
@@ -58,8 +89,31 @@ export default class Drinks extends Component {
       loading: false,
       drinks: data.drinks,
       perDay: data.stddrinks_per_day,
+      total: data.total_stddrinks,
+      firstDate: this.getFirstDate(data.drinks),
+      lastDate: this.getLastDate(data.drinks)
+    })
+  }
+
+  handleSortingData(data) {
+    this.setState({
+      loading: false,
+      drinks: data.drinks,
+      perDay: data.stddrinks_per_day,
       total: data.total_stddrinks
     })
+  }
+
+  getFirstDate(drinks) {
+    return this.formatForInput(drinks[0].imbibedOn)
+  }
+
+  getLastDate(drinks) {
+    return this.formatForInput(drinks[drinks.length - 1].imbibedOn);
+  }
+
+  formatForInput(value) {
+    return moment(value).format("YYYY-MM-DD")
   }
 
   handleErrors(error) {
@@ -128,6 +182,10 @@ export default class Drinks extends Component {
             drinks={this.state.drinks}
             perDay={this.state.perDay}
             total={this.state.total}
+            handleInputChange={this.handleInputChange}
+            firstDate={this.state.firstDate}
+            lastDate={this.state.lastDate}
+            handleSortingFormSubmit={this.handleSortingFormSubmit}
           />
         </div>
         <div className="column">
