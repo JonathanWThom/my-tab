@@ -18,11 +18,11 @@ export default class Access extends Component {
   }
 
   handleLogin(event) {
-    this.submitUserForm(event, "http://localhost:8000/login")
+    this.submitUserForm(event, `${process.env.API_URL}/login`)
   }
 
   handleSignUp(event) {
-    this.submitUserForm(event, "http://localhost:8000/signup")
+    this.submitUserForm(event, `${process.env.API_URL}/signup`)
   }
 
   // TODO: Move to utils

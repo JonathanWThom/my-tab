@@ -45,7 +45,7 @@ export default class Drinks extends Component {
       end: data.get("lastDate")
     };
 
-    const url = new URL("http://localhost:8000/drinks");
+    const url = new URL(`${process.env.API_URL}/drinks`);
     url.search = new URLSearchParams(params);
 
     // refactor into shared function
@@ -77,7 +77,7 @@ export default class Drinks extends Component {
       }
     }
 
-    fetch("http://localhost:8000/drinks", options)
+    fetch(`${process.env.API_URL}/drinks`, options)
       .then(res => this.handleStatus(res))
       .then(res => res.json())
       .then(data => this.handleDrinksData(data))
@@ -105,11 +105,19 @@ export default class Drinks extends Component {
   }
 
   getFirstDate(drinks) {
-    return this.formatForInput(drinks[0].imbibedOn)
+    if (drinks.length) {
+      return this.formatForInput(drinks[0].imbibedOn)
+    } else {
+      return ""
+    }
   }
 
   getLastDate(drinks) {
-    return this.formatForInput(drinks[drinks.length - 1].imbibedOn);
+    if (drinks.length) {
+      return this.formatForInput(drinks[drinks.length - 1].imbibedOn);
+    } else {
+      return ""
+    }
   }
 
   formatForInput(value) {
@@ -152,7 +160,7 @@ export default class Drinks extends Component {
       imbibedOn: (new Date(imbibedOn)).toISOString()
     };
 
-    fetch("http://localhost:8000/drinks", {
+    fetch(`${process.env.API_URL}/drinks`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
