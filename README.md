@@ -31,7 +31,6 @@ number of standard drinks per day.
 ### Todo and Known Bugs
 
 * Add favicon.
-* Dates are saved as the day before. This is likely a problem with the API.
 * Needs an explanation of what a standard drink is.
 * Not yet optimized for mobile - which is where I will be using it the most.
 * Test coverage

@@ -13,7 +13,7 @@ export default class DrinkList extends Component {
   }
 
   formattedImbibedOn(drink) {
-    return moment(drink.imbibedOn).format("MMMM Do, YYYY");
+    return moment.utc(drink.imbibedOn).format("MMMM Do, YYYY");
   }
 
   roundToTwo(num) {

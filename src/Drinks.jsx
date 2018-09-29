@@ -112,7 +112,7 @@ export default class Drinks extends Component {
   }
 
   formatForInput(value) {
-    return moment(value).format("YYYY-MM-DD");
+    return moment.utc(value).format("YYYY-MM-DD");
   }
 
   handleErrors(error) {
