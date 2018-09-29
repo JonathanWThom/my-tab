@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import moment from "moment";
 import DrinkSortingForm from "./DrinkSortingForm.jsx";
+import "./DrinkList.css";
 
 export default class DrinkList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.deleteDrink = this.deleteDrink.bind(this);
+  }
+
+  deleteDrink(event) {
+    if ( confirm("Are you sure?") ) {
+      console.log(event)
+    }
+  }
+
   drinkCopy(drink) {
     return drink.stddrink === 1 ? "drink" : "drinks";
   }
@@ -22,6 +35,7 @@ export default class DrinkList extends Component {
         <td>{drink.oz}</td>
         <td>{drink.percent * 100}%</td>
         <td>{this.roundToTwo(drink.stddrink)}</td>
+        <td className="delete" onClick={this.deleteDrink}>x</td>
       </tr>
     )
     const totalCopy = <p><strong>Total Standard Drinks: </strong>{this.roundToTwo(this.props.total)}</p>;
@@ -43,7 +57,7 @@ export default class DrinkList extends Component {
     }
 
     return(
-      <div>
+      <div className="drink-list">
           <h4>Summary</h4>
           { sortingForm }
           { totalCopy }
@@ -55,6 +69,7 @@ export default class DrinkList extends Component {
               <th>Ounces</th>
               <th>Percent</th>
               <th>Standard Drinks</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
