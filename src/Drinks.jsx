@@ -50,6 +50,8 @@ export default class Drinks extends Component {
     url.search = new URLSearchParams(params);
 
     // refactor into shared function
+    // can handleSortingData be changed to just handleData?
+    // then everything below this could be shared
     const options = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -71,14 +73,18 @@ export default class Drinks extends Component {
     return response;
   }
 
-  getDrinks() {
+  getDrinks(parameters) {
+    const params = parameters || {};
     const options = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
-    fetch(`${process.env.API_URL}/drinks`, options)
+    const url = new URL(`${process.env.API_URL}/drinks`);
+    url.search = new URLSearchParams(params);
+
+    fetch(url, options)
       .then(res => this.handleStatus(res))
       .then(res => res.json())
       .then(data => this.handleDrinksData(data))
@@ -188,17 +194,18 @@ export default class Drinks extends Component {
     if (confirm("Are you sure?")) {
       fetch(`${process.env.API_URL}/drinks/${id}`, options)
         .then(res => this.handleStatus(res))
-        .then(this.handleDeleteDrinkData(id))
+        .then(this.handleDeleteDrinkData())
         .catch(error => this.handleErrors(error));
     }
   }
 
-  handleDeleteDrinkData(id) {
-    const drinks = [...this.state.drinks];
-    const found = drinks.find(drink => drink.id === id);
-    const index = drinks.indexOf(found);
-    drinks.splice(index, 1);
-    this.setState({ drinks });
+  handleDeleteDrinkData() {
+    const { firstDate, lastDate } = this.state;
+    const params = {
+      start: firstDate,
+      end: lastDate,
+    };
+    this.getDrinks(params);
   }
 
   handleFormSubmit(target) {
