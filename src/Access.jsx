@@ -19,7 +19,7 @@ export default class Access extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      validToken: this.validToken(),
+      validToken: Access.validToken(),
       error: null,
     };
 
@@ -53,7 +53,7 @@ export default class Access extends Component {
     fetch(path, {
       method: "POST",
       body: JSON.stringify(params),
-    }).then(response => this.handleStatus(response))
+    }).then(response => Access.handleStatus(response))
       .then(response => response.json())
       .then(json => this.setToken(json.token))
       .catch(error => this.setState({ error: error.message }));
