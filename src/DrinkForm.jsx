@@ -12,6 +12,7 @@ export default class DrinkForm extends Component {
             onChange={this.props.handleInputChange}
             name="oz"
             type="number"
+            step="0.01"
             />
           <br />
           <label name="percent">Percent</label>
@@ -20,6 +21,7 @@ export default class DrinkForm extends Component {
             onChange={this.props.handleInputChange}
             name="percent"
             type="number"
+            step="0.01"
             />
           <br />
           <label name="imbibedOn">Imbibed On</label>
@@ -31,7 +33,7 @@ export default class DrinkForm extends Component {
             />
           <br />
           <input type="submit" value="Submit" />
-        </form>        
+        </form>
       </div>
     )
   }
