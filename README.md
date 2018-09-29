@@ -25,7 +25,7 @@ number of standard drinks per day.
 
 ### Setup
 
-* Will not run without the [here](https://github.com/JonathanWThom/my-tab-api).
+* Will not run without the [API](https://github.com/JonathanWThom/my-tab-api).
 * Once that's install, `npm install` and `npm start` should do the trick.
 
 ### Todo and Known Bugs
