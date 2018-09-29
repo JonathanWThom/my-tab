@@ -7,5 +7,6 @@
     "localStorage": true,
     "fetch": true,
     "FormData": true,
+    "confirm": true,
   }
 }

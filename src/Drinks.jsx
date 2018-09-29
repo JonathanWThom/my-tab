@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import moment from "moment";
 import DrinkForm from "./DrinkForm.jsx";
 import DrinkList from "./DrinkList.jsx";
-import moment from "moment";
 
 export default class Drinks extends Component {
   constructor(props) {
@@ -13,12 +13,13 @@ export default class Drinks extends Component {
       imbibedOn: "",
       error: null,
       firstDate: "",
-      lastDate: ""
+      lastDate: "",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSortingFormSubmit = this.handleSortingFormSubmit.bind(this);
+    this.handleDeleteDrink = this.handleDeleteDrink.bind(this);
   }
 
   componentDidMount() {
@@ -31,18 +32,18 @@ export default class Drinks extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   handleSortingFormSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     const target = event.target;
     const data = new FormData(target);
     const params = {
       start: data.get("firstDate"),
-      end: data.get("lastDate")
+      end: data.get("lastDate"),
     };
 
     const url = new URL(`${process.env.API_URL}/drinks`);
@@ -51,9 +52,9 @@ export default class Drinks extends Component {
     // refactor into shared function
     const options = {
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      }
-    }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
 
     fetch(url, options)
       .then(res => this.handleStatus(res))
@@ -73,9 +74,9 @@ export default class Drinks extends Component {
   getDrinks() {
     const options = {
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      }
-    }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
 
     fetch(`${process.env.API_URL}/drinks`, options)
       .then(res => this.handleStatus(res))
@@ -91,8 +92,8 @@ export default class Drinks extends Component {
       perDay: data.stddrinks_per_day,
       total: data.total_stddrinks,
       firstDate: this.getFirstDate(data.drinks),
-      lastDate: this.getLastDate(data.drinks)
-    })
+      lastDate: this.getLastDate(data.drinks),
+    });
   }
 
   handleSortingData(data) {
@@ -100,35 +101,33 @@ export default class Drinks extends Component {
       loading: false,
       drinks: data.drinks,
       perDay: data.stddrinks_per_day,
-      total: data.total_stddrinks
-    })
+      total: data.total_stddrinks,
+    });
   }
 
   getFirstDate(drinks) {
     if (drinks.length) {
-      return this.formatForInput(drinks[0].imbibedOn)
-    } else {
-      return ""
+      return this.formatForInput(drinks[0].imbibedOn);
     }
+    return "";
   }
 
   getLastDate(drinks) {
     if (drinks.length) {
       return this.formatForInput(drinks[drinks.length - 1].imbibedOn);
-    } else {
-      return ""
     }
+    return "";
   }
 
   formatForInput(value) {
-    return moment(value).format("YYYY-MM-DD")
+    return moment(value).format("YYYY-MM-DD");
   }
 
   handleErrors(error) {
     if (error.message === "401") {
-      this.props.invalidateToken()
+      this.props.invalidateToken();
     } else {
-      this.setState({ loading: false, error: error.message })
+      this.setState({ loading: false, error: error.message });
     }
   }
 
@@ -144,41 +143,71 @@ export default class Drinks extends Component {
     event.preventDefault();
     const target = event.target;
 
-    const data = new FormData(target),
-      oz = data.get("oz"),
-      percent = data.get("percent"),
-      imbibedOn = data.get("imbibedOn");
+    const data = new FormData(target);
+
+
+    const oz = data.get("oz");
+
+
+    const percent = data.get("percent");
+
+
+    const imbibedOn = data.get("imbibedOn");
 
     if ([oz, percent, imbibedOn].includes("")) {
-      this.setState({ error: "Please fill out all fields" })
-      return
+      this.setState({ error: "Please fill out all fields" });
+      return;
     }
 
     const params = {
-      oz: oz,
-      percent: percent,
-      imbibedOn: (new Date(imbibedOn)).toISOString()
+      oz,
+      percent,
+      imbibedOn: (new Date(imbibedOn)).toISOString(),
     };
 
     fetch(`${process.env.API_URL}/drinks`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(params),
     }).then(res => this.handleStatus(res))
       .then(response => response.json())
       .then(data => this.handleFormSubmit(target))
       .catch(error => this.handleErrors(error));
   }
 
+  handleDeleteDrink(id) {
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    if (confirm("Are you sure?")) {
+      fetch(`${process.env.API_URL}/drinks/${id}`, options)
+        .then(res => this.handleStatus(res))
+        .then(this.handleDeleteDrinkData(id))
+        .catch(error => this.handleErrors(error));
+    }
+  }
+
+  handleDeleteDrinkData(id) {
+    const drinks = [...this.state.drinks];
+    const found = drinks.find(drink => drink.id === id);
+    const index = drinks.indexOf(found);
+    drinks.splice(index, 1);
+    this.setState({ drinks });
+  }
+
   handleFormSubmit(target) {
     this.setState({
       oz: "",
       percent: "",
-      imbibedOn: ""
-    })
-    this.getDrinks()
+      imbibedOn: "",
+    });
+    this.getDrinks();
   }
 
   renderDrinks() {
@@ -194,6 +223,7 @@ export default class Drinks extends Component {
             firstDate={this.state.firstDate}
             lastDate={this.state.lastDate}
             handleSortingFormSubmit={this.handleSortingFormSubmit}
+            handleDeleteDrink={this.handleDeleteDrink}
           />
         </div>
         <div className="column">
@@ -213,10 +243,9 @@ export default class Drinks extends Component {
   render() {
     if (this.state.loading) {
       return this.renderLoading();
-    } else if (this.state.drinks) {
+    } if (this.state.drinks) {
       return this.renderDrinks();
-    } else {
-      return this.renderError();
     }
+    return this.renderError();
   }
 }

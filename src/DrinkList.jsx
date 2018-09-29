@@ -6,14 +6,6 @@ import "./DrinkList.css";
 export default class DrinkList extends Component {
   constructor(props) {
     super(props);
-
-    this.deleteDrink = this.deleteDrink.bind(this);
-  }
-
-  deleteDrink(event) {
-    if (confirm("Are you sure?")) {
-      console.log(event);
-    }
   }
 
   drinkCopy(drink) {
@@ -38,7 +30,7 @@ export default class DrinkList extends Component {
 %
         </td>
         <td>{this.roundToTwo(drink.stddrink)}</td>
-        <td className="delete" onClick={this.deleteDrink}>x</td>
+        <td className="delete" onClick={() => this.props.handleDeleteDrink(drink.id)}>x</td>
       </tr>
     ));
     const totalCopy = (
