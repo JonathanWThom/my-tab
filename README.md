@@ -4,7 +4,7 @@ Judgement free alcohol consumption tracker.
 This is the front end of the [My Tab](https://my-tab.herokuapp.com/) app.
 The back end code can be see [here](https://github.com/JonathanWThom/my-tab-api).
 
-[[https://github.com/JonathanWThom/my-tab/blob/master/dashboard.png|alt=my-tab-dashboard]]
+![My Tab dashboard](https://github.com/JonathanWThom/my-tab/blob/master/dashboard.png)
 
 ### Features
 
