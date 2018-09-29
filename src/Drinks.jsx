@@ -46,23 +46,7 @@ export default class Drinks extends Component {
       end: data.get("lastDate"),
     };
 
-    const url = new URL(`${process.env.API_URL}/drinks`);
-    url.search = new URLSearchParams(params);
-
-    // refactor into shared function
-    // can handleSortingData be changed to just handleData?
-    // then everything below this could be shared
-    const options = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
-    fetch(url, options)
-      .then(res => this.handleStatus(res))
-      .then(res => res.json())
-      .then(data => this.handleSortingData(data))
-      .catch(error => this.handleErrors(error));
+    this.getDrinks(params, true);
   }
 
   // TODO: Move to utils
@@ -73,7 +57,8 @@ export default class Drinks extends Component {
     return response;
   }
 
-  getDrinks(parameters) {
+  getDrinks(parameters, sorting) {
+    const sort = sorting || false;
     const params = parameters || {};
     const options = {
       headers: {
@@ -87,27 +72,28 @@ export default class Drinks extends Component {
     fetch(url, options)
       .then(res => this.handleStatus(res))
       .then(res => res.json())
-      .then(data => this.handleDrinksData(data))
+      .then(data => this.handleDrinksData(data, sort))
       .catch(error => this.handleErrors(error));
   }
 
-  handleDrinksData(data) {
-    this.setState({
-      loading: false,
-      drinks: data.drinks,
-      perDay: data.stddrinks_per_day,
-      total: data.total_stddrinks,
-      firstDate: this.getFirstDate(data.drinks),
-      lastDate: this.getLastDate(data.drinks),
-    });
-  }
+  handleDrinksData(data, sort) {
+    let firstDate;
+    let lastDate;
+    if (sort === true) {
+      firstDate = this.state.firstDate;
+      lastDate = this.state.lastDate;
+    } else {
+      firstDate = this.getFirstDate(data.drinks);
+      lastDate = this.getLastDate(data.drinks);
+    }
 
-  handleSortingData(data) {
     this.setState({
       loading: false,
       drinks: data.drinks,
       perDay: data.stddrinks_per_day,
       total: data.total_stddrinks,
+      firstDate,
+      lastDate,
     });
   }
 
