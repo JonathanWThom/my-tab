@@ -11,8 +11,8 @@ export default class DrinkList extends Component {
   }
 
   deleteDrink(event) {
-    if ( confirm("Are you sure?") ) {
-      console.log(event)
+    if (confirm("Are you sure?")) {
+      console.log(event);
     }
   }
 
@@ -25,28 +25,37 @@ export default class DrinkList extends Component {
   }
 
   roundToTwo(num) {
-    return +(Math.round(num + "e+2")  + "e-2");
+    return +(`${Math.round(`${num}e+2`)}e-2`);
   }
 
   render() {
-    const drinks = this.props.drinks.map((drink) =>
+    const drinks = this.props.drinks.map(drink => (
       <tr key={drink.id}>
         <td>{this.formattedImbibedOn(drink)}</td>
         <td>{drink.oz}</td>
-        <td>{drink.percent * 100}%</td>
+        <td>
+          {drink.percent * 100}
+%
+        </td>
         <td>{this.roundToTwo(drink.stddrink)}</td>
         <td className="delete" onClick={this.deleteDrink}>x</td>
       </tr>
-    )
-    const totalCopy = <p><strong>Total Standard Drinks: </strong>{this.roundToTwo(this.props.total)}</p>;
-    const perDayCopy =
+    ));
+    const totalCopy = (
+      <p>
+        <strong>Total Standard Drinks: </strong>
+        {this.roundToTwo(this.props.total)}
+      </p>
+    );
+    const perDayCopy = (
       <p>
         <strong>Average Standard Drinks Per Day: </strong>
         {this.roundToTwo(this.props.perDay)}
-      </p>;
+      </p>
+    );
     let sortingForm;
     if (this.props.drinks.length > 0) {
-      sortingForm =
+      sortingForm = (
         <DrinkSortingForm
           drinks={this.props.drinks}
           handleInputChange={this.props.handleInputChange}
@@ -54,14 +63,15 @@ export default class DrinkList extends Component {
           lastDate={this.props.lastDate}
           handleSortingFormSubmit={this.props.handleSortingFormSubmit}
         />
+      );
     }
 
-    return(
+    return (
       <div className="drink-list">
-          <h4>Summary</h4>
-          { sortingForm }
-          { totalCopy }
-          { perDayCopy }
+        <h4>Summary</h4>
+        { sortingForm }
+        { totalCopy }
+        { perDayCopy }
         <table>
           <thead>
             <tr>
@@ -69,7 +79,7 @@ export default class DrinkList extends Component {
               <th>Ounces</th>
               <th>Percent</th>
               <th>Standard Drinks</th>
-              <th></th>
+              <th />
             </tr>
           </thead>
           <tbody>

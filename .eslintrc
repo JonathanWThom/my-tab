@@ -2,5 +2,10 @@
   "extends": "airbnb",
   "rules": {
     "quotes": ["error", "double"],
+  },
+  "globals": {
+    "localStorage": true,
+    "fetch": true,
+    "FormData": true,
   }
 }

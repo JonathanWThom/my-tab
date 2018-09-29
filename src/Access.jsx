@@ -1,15 +1,26 @@
 import React, { Component } from "react";
-import Drinks from "./Drinks.jsx"
-import Login from "./Login.jsx"
-import Logout from "./Logout.jsx"
-import SignUp from "./SignUp.jsx"
+import Drinks from "./Drinks";
+import Login from "./Login";
+import Logout from "./Logout";
+import SignUp from "./SignUp";
 
 export default class Access extends Component {
+  static validToken() {
+    return localStorage.getItem("token") !== null;
+  }
+
+  static handleStatus(response) {
+    if (!response.ok) {
+      throw Error(response.status);
+    }
+    return response;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       validToken: this.validToken(),
-      error: null
+      error: null,
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -17,80 +28,69 @@ export default class Access extends Component {
     this.handleSignUp = this.handleSignUp.bind(this);
   }
 
+  setToken(token) {
+    localStorage.setItem("token", token);
+    this.setState({ validToken: true });
+  }
+
   handleLogin(event) {
-    this.submitUserForm(event, `${process.env.API_URL}/login`)
+    this.submitUserForm(event, `${process.env.API_URL}/login`);
   }
 
   handleSignUp(event) {
-    this.submitUserForm(event, `${process.env.API_URL}/signup`)
+    this.submitUserForm(event, `${process.env.API_URL}/signup`);
   }
-
-  // TODO: Move to utils
-  handleStatus(response) {
-    if (!response.ok) {
-      throw Error(response.status);
-    }
-    return response;
-  }
-
 
   submitUserForm(event, path) {
     event.preventDefault();
-    const data = new FormData(event.target),
-      params = {
-        username: data.get("username"),
-        password: data.get("password")
-      };
+    const data = new FormData(event.target);
+
+    const params = {
+      username: data.get("username"),
+      password: data.get("password"),
+    };
 
     fetch(path, {
       method: "POST",
-      body: JSON.stringify(params)
+      body: JSON.stringify(params),
     }).then(response => this.handleStatus(response))
       .then(response => response.json())
-      .then(data => this.setToken(data.token))
+      .then(json => this.setToken(json.token))
       .catch(error => this.setState({ error: error.message }));
   }
 
-  validToken() {
-    return localStorage.getItem("token") !== null;
-  }
-
-  setToken(token) {
-    localStorage.setItem("token", token)
-    this.setState({validToken: true})
-  }
-
   invalidateToken() {
-    localStorage.removeItem("token")
-    this.setState({validToken: false})
+    localStorage.removeItem("token");
+    this.setState({ validToken: false });
   }
 
   // TODO: Refactor header into component
   // TODO: Refactor SignUp/Login, they are basically the same
 
-  render(){
-    if (this.state.validToken) {
-      return(
+  render() {
+    const { validToken, error } = this.state;
+
+    if (validToken) {
+      return (
         <div>
           <div className="header text-align-right">
             <h3 className="float-left">My Tab</h3>
-            <Logout invalidateToken={this.invalidateToken}/>
+            <Logout invalidateToken={this.invalidateToken} />
           </div>
-          <Drinks invalidateToken={this.invalidateToken}/>
-        </div>
-      );
-    } else {
-      return(
-        <div>
-          <div className="header text-align-left">
-            <h3>My Tab</h3>
-          </div>
-          <p>Judgement free alcohol consumption tracker</p>
-          { this.state.error }
-          <SignUp handleSubmit={this.handleSignUp} />
-          <Login handleSubmit={this.handleLogin} />
+          <Drinks invalidateToken={this.invalidateToken} />
         </div>
       );
     }
+    return (
+      <div>
+        <div className="header text-align-left">
+          <h3>My Tab</h3>
+        </div>
+        <p>Judgement free alcohol consumption tracker</p>
+        { error }
+        <SignUp handleSubmit={this.handleSignUp} />
+        <Login handleSubmit={this.handleLogin} />
+      </div>
+    );
   }
 }
