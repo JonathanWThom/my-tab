@@ -20,12 +20,13 @@ export default class SignUp extends Component {
     if (showForm) {
       form = <UserForm handleSubmit={this.props.handleSubmit} />
     }
+    const { copy } = this.props;
 
     return(
       <div>
         <button
           onClick={this.toggleForm}
-          className="button-clear logout-button">Sign Up
+          className="button-clear logout-button">{ copy }
         </button>
         { form }
       </div>

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
+import Authenticator from "./Authenticator";
 import Drinks from "./Drinks";
-import Login from "./Login";
 import Logout from "./Logout";
-import SignUp from "./SignUp";
 import utils from "./utils";
 
 export default class Access extends Component {
@@ -24,7 +23,7 @@ export default class Access extends Component {
 
   setToken(token) {
     localStorage.setItem("token", token);
-    this.setState({ validToken: true });
+    this.setState({ validToken: true, error: null });
   }
 
   handleLogin(event) {
@@ -59,7 +58,6 @@ export default class Access extends Component {
   }
 
   // TODO: Refactor header into component
-  // TODO: Refactor SignUp/Login, they are basically the same
 
   render() {
     const { validToken, error } = this.state;
@@ -82,8 +80,8 @@ export default class Access extends Component {
         </div>
         <p>Judgement free alcohol consumption tracker</p>
         { error }
-        <SignUp handleSubmit={this.handleSignUp} />
-        <Login handleSubmit={this.handleLogin} />
+        <Authenticator handleSubmit={this.handleSignUp} copy="Sign Up"/>
+        <Authenticator handleSubmit={this.handleLogin} copy="Login"/>
       </div>
     );
   }

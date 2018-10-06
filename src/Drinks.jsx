@@ -123,16 +123,9 @@ export default class Drinks extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const target = event.target;
-
     const data = new FormData(target);
-
-
     const oz = data.get("oz");
-
-
     const percent = data.get("percent");
-
-
     const imbibedOn = data.get("imbibedOn");
 
     if ([oz, percent, imbibedOn].includes("")) {
