@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Authenticator from "./Authenticator";
 import Drinks from "./Drinks";
+import Header from "./Header";
 import Logout from "./Logout";
 import utils from "./utils";
 
@@ -57,27 +58,20 @@ export default class Access extends Component {
     this.setState({ validToken: false });
   }
 
-  // TODO: Refactor header into component
-
   render() {
     const { validToken, error } = this.state;
 
     if (validToken) {
       return (
         <div>
-          <div className="header text-align-right">
-            <h3 className="float-left">My Tab</h3>
-            <Logout invalidateToken={this.invalidateToken} />
-          </div>
+          <Header invalidateToken={this.invalidateToken} />
           <Drinks invalidateToken={this.invalidateToken} />
         </div>
       );
     }
     return (
       <div>
-        <div className="header text-align-left">
-          <h3>My Tab</h3>
-        </div>
+        <Header />
         <p>Judgement free alcohol consumption tracker</p>
         { error }
         <Authenticator handleSubmit={this.handleSignUp} copy="Sign Up"/>
