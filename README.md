@@ -30,7 +30,6 @@ number of standard drinks per day.
 
 ### Todo and Known Bugs
 
-* Add favicon.
 * Needs an explanation of what a standard drink is.
 * Not yet optimized for mobile - which is where I will be using it the most.
 * Test coverage
