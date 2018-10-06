@@ -3,17 +3,11 @@ import Drinks from "./Drinks";
 import Login from "./Login";
 import Logout from "./Logout";
 import SignUp from "./SignUp";
+import utils from "./utils";
 
 export default class Access extends Component {
   static validToken() {
     return localStorage.getItem("token") !== null;
-  }
-
-  static handleStatus(response) {
-    if (!response.ok) {
-      throw Error(response.status);
-    }
-    return response;
   }
 
   constructor(props) {
@@ -53,7 +47,7 @@ export default class Access extends Component {
     fetch(path, {
       method: "POST",
       body: JSON.stringify(params),
-    }).then(response => Access.handleStatus(response))
+    }).then(response => utils.handleStatus(response))
       .then(response => response.json())
       .then(json => this.setToken(json.token))
       .catch(error => this.setState({ error: error.message }));

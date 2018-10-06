@@ -37,6 +37,7 @@ number of standard drinks per day.
 could be refactored to do more of the heavy lifting so that less hits to the api
 are needed.
 * Could use some serious refactoring.
+* There is some odd behavior when all drinks from the selected time period are removed.
 
 ### License
 

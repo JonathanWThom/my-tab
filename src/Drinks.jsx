@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
+import utils from "./utils";
 import DrinkForm from "./DrinkForm.jsx";
 import DrinkList from "./DrinkList.jsx";
 
@@ -49,14 +50,6 @@ export default class Drinks extends Component {
     this.getDrinks(params, true);
   }
 
-  // TODO: Move to utils
-  handleStatus(response) {
-    if (!response.ok) {
-      throw Error(response.status);
-    }
-    return response;
-  }
-
   getDrinks(parameters, sorting) {
     const sort = sorting || false;
     const params = parameters || {};
@@ -70,7 +63,7 @@ export default class Drinks extends Component {
     url.search = new URLSearchParams(params);
 
     fetch(url, options)
-      .then(res => this.handleStatus(res))
+      .then(res => utils.handleStatus(res))
       .then(res => res.json())
       .then(data => this.handleDrinksData(data, sort))
       .catch(error => this.handleErrors(error));
@@ -99,20 +92,16 @@ export default class Drinks extends Component {
 
   getFirstDate(drinks) {
     if (drinks.length) {
-      return this.formatForInput(drinks[0].imbibedOn);
+      return utils.formatForInput(drinks[0].imbibedOn);
     }
     return "";
   }
 
   getLastDate(drinks) {
     if (drinks.length) {
-      return this.formatForInput(drinks[drinks.length - 1].imbibedOn);
+      return utils.formatForInput(drinks[drinks.length - 1].imbibedOn);
     }
     return "";
-  }
-
-  formatForInput(value) {
-    return moment.utc(value).format("YYYY-MM-DD");
   }
 
   handleErrors(error) {
@@ -163,7 +152,7 @@ export default class Drinks extends Component {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(params),
-    }).then(res => this.handleStatus(res))
+    }).then(res => utils.handleStatus(res))
       .then(response => response.json())
       .then(data => this.handleFormSubmit(target))
       .catch(error => this.handleErrors(error));
@@ -179,7 +168,7 @@ export default class Drinks extends Component {
 
     if (confirm("Are you sure?")) {
       fetch(`${process.env.API_URL}/drinks/${id}`, options)
-        .then(res => this.handleStatus(res))
+        .then(res => utils.handleStatus(res))
         .then(this.handleDeleteDrinkData())
         .catch(error => this.handleErrors(error));
     }
