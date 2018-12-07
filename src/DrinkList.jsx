@@ -20,14 +20,17 @@ export default class DrinkList extends Component {
     return +(`${Math.round(`${num}e+2`)}e-2`);
   }
 
+  drinkPercent(drink) {
+    return (drink.percent * 100).toFixed(1);
+  }
+
   render() {
     const drinks = this.props.drinks.map(drink => (
       <tr key={drink.id}>
         <td>{this.formattedImbibedOn(drink)}</td>
         <td>{drink.oz}</td>
         <td>
-          {drink.percent * 100}
-%
+          {this.drinkPercent(drink)}%
         </td>
         <td>{this.roundToTwo(drink.stddrink)}</td>
         <td className="delete" onClick={() => this.props.handleDeleteDrink(drink.id)}>x</td>
