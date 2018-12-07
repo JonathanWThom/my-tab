@@ -4,7 +4,7 @@
   "description": "",
   "engines": {
     "node": "10.9.0"
-  }
+  },
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --env.API_URL=http://localhost:8000 --config ./webpack-dev.config.js --open",
