@@ -90,14 +90,14 @@ export default class Drinks extends Component {
     });
   }
 
-  getFirstDate(drinks) {
+  getLastDate(drinks) {
     if (drinks.length) {
       return utils.formatForInput(drinks[0].imbibedOn);
     }
     return "";
   }
 
-  getLastDate(drinks) {
+  getFirstDate(drinks) {
     if (drinks.length) {
       return utils.formatForInput(drinks[drinks.length - 1].imbibedOn);
     }
@@ -210,7 +210,7 @@ export default class Drinks extends Component {
             handleSortingFormSubmit={this.handleSortingFormSubmit}
             handleDeleteDrink={this.handleDeleteDrink}
           />
-        </div>        
+        </div>
       </div>
     );
   }
