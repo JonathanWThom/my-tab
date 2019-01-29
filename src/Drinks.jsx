@@ -15,12 +15,15 @@ export default class Drinks extends Component {
       error: null,
       firstDate: "",
       lastDate: "",
+      page: 1
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSortingFormSubmit = this.handleSortingFormSubmit.bind(this);
     this.handleDeleteDrink = this.handleDeleteDrink.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+    this.previousPage = this.previousPage.bind(this);
   }
 
   componentDidMount() {
@@ -185,7 +188,54 @@ export default class Drinks extends Component {
     this.getDrinks();
   }
 
+  paginatedDrinks() {
+    const { page } = this.state;
+    const end = page * 10;
+    const start = end - 10;
+    return this.state.drinks.slice(start, end);
+  }
+
+  nextPage() {
+    const { page } = this.state;
+    this.setState({
+      page: page + 1
+    })
+  }
+
+  previousPage() {
+    const { page } = this.state;
+    this.setState({
+      page: page - 1
+    })
+  }
+
+  getPagination() {
+    let previous;
+    let next;
+    const { drinks, page } = this.state;
+
+    if (page !== 1) {
+      previous = <div onClick={this.previousPage}>Left Paginate</div>
+    }
+
+    const showNext = drinks.length > (page * 10);
+
+    if (showNext) {
+      next = <div onClick={this.nextPage}>Right Paginate</div>
+    }
+
+    return(
+      <div>
+        {previous}
+        <div>Current Page: {this.state.page}</div>
+        {next}
+      </div>
+    )
+  }
+
   renderDrinks() {
+    const pagination = this.getPagination();
+
     return (
       <div className="row">
         { this.state.error }
@@ -200,8 +250,9 @@ export default class Drinks extends Component {
           />
         </div>
         <div className="column">
+          {pagination}
           <DrinkList
-            drinks={this.state.drinks}
+            drinks={this.paginatedDrinks()}
             perDay={this.state.perDay}
             total={this.state.total}
             handleInputChange={this.handleInputChange}
