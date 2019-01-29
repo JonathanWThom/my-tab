@@ -10,30 +10,30 @@ const DrinkForm = (props) => {
     <div>
       <h4>Add Drink</h4>
       <form id="drink-form" onSubmit={handleSubmit}>
-        <label name="oz">Ounces</label>
         <input
           value={oz}
           onChange={handleInputChange}
           name="oz"
           type="number"
           step="0.01"
+          placeholder="Ounces"
         />
         <br />
-        <label name="percent">Percent</label>
         <input
           value={percent}
           onChange={handleInputChange}
           name="percent"
           type="number"
           step="0.01"
+          placeholder="Percent"
         />
         <br />
-        <label name="imbibedOn">Imbibed On</label>
         <input
           value={imbibedOn}
           onChange={handleInputChange}
           type="date"
           name="imbibedOn"
+          placeholder="Imbibed On"
         />
         <br />
         <input type="submit" value="Submit" />
