@@ -215,19 +215,32 @@ export default class Drinks extends Component {
     const { drinks, page } = this.state;
 
     if (page !== 1) {
-      previous = <div onClick={this.previousPage}>Left Paginate</div>
+      previous = (
+        <div
+          onClick={this.previousPage}
+          className="cursor-pointer float-left purple"
+          >
+          Previous
+        </div>
+      )
     }
 
     const showNext = drinks.length > (page * 10);
 
     if (showNext) {
-      next = <div onClick={this.nextPage}>Right Paginate</div>
+      next = (
+        <div
+          onClick={this.nextPage}
+          className="cursor-pointer float-right purple"
+          >
+          Next
+        </div>
+      )
     }
 
     return(
       <div>
         {previous}
-        <div>Current Page: {this.state.page}</div>
         {next}
       </div>
     )
@@ -250,7 +263,6 @@ export default class Drinks extends Component {
           />
         </div>
         <div className="column">
-          {pagination}
           <DrinkList
             drinks={this.paginatedDrinks()}
             perDay={this.state.perDay}
@@ -261,6 +273,7 @@ export default class Drinks extends Component {
             handleSortingFormSubmit={this.handleSortingFormSubmit}
             handleDeleteDrink={this.handleDeleteDrink}
           />
+          {pagination}
         </div>
       </div>
     );

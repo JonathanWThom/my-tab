@@ -33,3 +33,19 @@ input[type="date"] {
 .text-align-left {
   text-align: left;
 }
+
+.cursor-pointer {
+  cursor: pointer
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.purple {
+  color: #9b4dca;
+}
