@@ -3,6 +3,7 @@ import moment from "moment";
 import utils from "./utils";
 import DrinkForm from "./DrinkForm.jsx";
 import DrinkList from "./DrinkList.jsx";
+import Pagination from "./Pagination";
 
 export default class Drinks extends Component {
   constructor(props) {
@@ -209,71 +210,50 @@ export default class Drinks extends Component {
     })
   }
 
-  getPagination() {
-    let previous;
-    let next;
-    const { drinks, page } = this.state;
-
-    if (page !== 1) {
-      previous = (
-        <div
-          onClick={this.previousPage}
-          className="cursor-pointer float-left purple"
-          >
-          Previous
-        </div>
-      )
-    }
-
-    const showNext = drinks.length > (page * 10);
-
-    if (showNext) {
-      next = (
-        <div
-          onClick={this.nextPage}
-          className="cursor-pointer float-right purple"
-          >
-          Next
-        </div>
-      )
-    }
-
-    return(
-      <div>
-        {previous}
-        {next}
-      </div>
-    )
-  }
-
   renderDrinks() {
-    const pagination = this.getPagination();
+    const {
+      error,
+      oz,
+      percent,
+      imbibedOn,
+      perDay,
+      total,
+      firstDate,
+      lastDate,
+      drinks,
+      page
+    } = this.state;
 
     return (
       <div className="row">
-        { this.state.error }
+        { error }
         <div className="column">
           <DrinkForm
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
-            oz={this.state.oz}
-            percent={this.state.percent}
-            imbibedOn={this.state.imbibedOn}
-            error={this.state.error}
+            oz={oz}
+            percent={percent}
+            imbibedOn={imbibedOn}
+            error={error}
           />
         </div>
         <div className="column">
           <DrinkList
             drinks={this.paginatedDrinks()}
-            perDay={this.state.perDay}
-            total={this.state.total}
+            perDay={perDay}
+            total={total}
             handleInputChange={this.handleInputChange}
-            firstDate={this.state.firstDate}
-            lastDate={this.state.lastDate}
+            firstDate={firstDate}
+            lastDate={lastDate}
             handleSortingFormSubmit={this.handleSortingFormSubmit}
             handleDeleteDrink={this.handleDeleteDrink}
           />
-          {pagination}
+          <Pagination
+            drinks={drinks}
+            page={page}
+            previousPage={this.previousPage}
+            nextPage={this.nextPage}
+          />
         </div>
       </div>
     );
