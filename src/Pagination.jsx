@@ -8,7 +8,8 @@ export default class Pagination extends Component {
   getPagination() {
     let previous;
     let next;
-    const { drinks, page, previousPage, nextPage } = this.props;
+    let last;
+    const { drinks, page, previousPage, nextPage, lastPage } = this.props;
 
     if (page !== 1) {
       previous = (
@@ -34,9 +35,23 @@ export default class Pagination extends Component {
       )
     }
 
+    const showLast = showNext;
+
+    if (showLast) {
+      last = (
+        <div
+          onClick={lastPage}
+          className="cursor-pointer float-right purple"
+          >
+          Last
+        </div>
+      )
+    }
+
     return(
       <div>
         {previous}
+        {last}
         {next}
       </div>
     )

@@ -25,6 +25,7 @@ export default class Drinks extends Component {
     this.handleDeleteDrink = this.handleDeleteDrink.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
+    this.lastPage = this.lastPage.bind(this);
   }
 
   componentDidMount() {
@@ -210,6 +211,14 @@ export default class Drinks extends Component {
     })
   }
 
+  lastPage() {
+    const { drinks } = this.state;
+    const last = Math.ceil(drinks.length / 10)
+    this.setState({
+      page: last
+    })
+  }
+
   renderDrinks() {
     const {
       error,
@@ -253,6 +262,7 @@ export default class Drinks extends Component {
             page={page}
             previousPage={this.previousPage}
             nextPage={this.nextPage}
+            lastPage={this.lastPage}
           />
         </div>
       </div>
