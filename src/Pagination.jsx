@@ -9,7 +9,15 @@ export default class Pagination extends Component {
     let previous;
     let next;
     let last;
-    const { drinks, page, previousPage, nextPage, lastPage } = this.props;
+    let first;
+    const {
+      drinks,
+      page,
+      previousPage,
+      nextPage,
+      lastPage,
+      firstPage
+    } = this.props;
 
     if (page !== 1) {
       previous = (
@@ -18,6 +26,15 @@ export default class Pagination extends Component {
           className="cursor-pointer float-left purple"
           >
           Previous
+        </div>
+      )
+
+      first = (
+        <div
+          onClick={firstPage}
+          className="cursor-pointer float-left purple"
+          >
+          First
         </div>
       )
     }
@@ -33,11 +50,7 @@ export default class Pagination extends Component {
           Next
         </div>
       )
-    }
 
-    const showLast = showNext;
-
-    if (showLast) {
       last = (
         <div
           onClick={lastPage}
@@ -50,6 +63,7 @@ export default class Pagination extends Component {
 
     return(
       <div>
+        {first}
         {previous}
         {last}
         {next}
