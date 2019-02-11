@@ -10,6 +10,8 @@ export default class Pagination extends Component {
     let next;
     let last;
     let first;
+    let moreRight;
+    let moreLeft;
     let pageNumbers = [];
     const {
       drinks,
@@ -65,7 +67,32 @@ export default class Pagination extends Component {
     }
 
     if (pages > 1) {
-      for (let i = 0; i < pages; i++) {
+      let start = 0;
+      let range = pages;
+
+      // TODO: Clean this mess up.
+      if (pages > 6) {
+        start = page - 3;
+        if (start < 1) {
+          start = 0
+          range = start + 6;
+        }
+        const last = start + range;
+        if (last > pages) {
+          const more = start + range - pages;
+          start = start - more + 1;
+        }
+
+        if (start > 0) {
+          moreLeft = <span>...</span>
+        }
+
+        if (pages > last) {
+          moreRight = <span>...</span>
+        }
+      }
+
+      for (let i = start; i < range; i++) {
         const p = i + 1;
         let content;
 
@@ -97,7 +124,9 @@ export default class Pagination extends Component {
           {previous}
         </div>
         <span className="position-absolute">
+          {moreLeft}
           {pageNumbers}
+          {moreRight}
         </span>
         <div>
           {last}
