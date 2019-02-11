@@ -35,7 +35,7 @@ export default class Pagination extends Component {
       first = (
         <div
           onClick={firstPage}
-          className="cursor-pointer float-left purple"
+          className="cursor-pointer float-left purple margin-right-10"
           >
           First
         </div>
@@ -48,7 +48,7 @@ export default class Pagination extends Component {
       next = (
         <div
           onClick={nextPage}
-          className="cursor-pointer float-right purple"
+          className="cursor-pointer float-right purple margin-right-10"
           >
           Next
         </div>
@@ -70,10 +70,18 @@ export default class Pagination extends Component {
         let content;
 
         if (p === page) {
-          content = <span key={p}>{p}</span>
+          content = (
+            <span className="margin-horizontal-2" key={p}>
+              {p}
+            </span>
+          )
         } else {
           content = (
-            <span key={p} onClick={(e) => visitPage(e, p)} className="cursor-pointer purple">
+            <span
+              key={p}
+              onClick={(e) => visitPage(e, p)}
+              className="cursor-pointer purple margin-horizontal-2"
+            >
               {p}
             </span>
           )
@@ -83,12 +91,18 @@ export default class Pagination extends Component {
     }
 
     return(
-      <div>
-        {first}
-        {previous}
-        {pageNumbers}
-        {last}
-        {next}
+      <div className="text-align-center">
+        <div className="position-absolute">
+          {first}
+          {previous}
+        </div>
+        <span className="position-absolute">
+          {pageNumbers}
+        </span>
+        <div>
+          {last}
+          {next}
+        </div>
       </div>
     )
   }

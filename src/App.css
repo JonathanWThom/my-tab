@@ -26,6 +26,10 @@ input[type="date"] {
   margin-bottom: 20px;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
 .text-align-right {
   text-align: right;
 }
@@ -48,4 +52,20 @@ input[type="date"] {
 
 .purple {
   color: #9b4dca;
+}
+
+.margin-right-10 {
+  margin-right: 10px;
+}
+
+.margin-horizontal-2 {
+  margin: 0 2px;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-relative {
+  position: relative;
 }
