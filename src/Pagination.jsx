@@ -72,7 +72,7 @@ export default class Pagination extends Component {
 
       if (pages > 6) {
         end = page + 3;
-        start = page - 3;
+        start = page - 4;
 
         if (start < 0) {
           const diff = Math.abs(start);
