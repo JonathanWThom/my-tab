@@ -79,10 +79,11 @@ export default class Pagination extends Component {
         const last = start + range;
 
         if (last > pages) {
-          const more = start + range - pages;
+          const diff = last - pages;
           range = pages - 1;
-          if (range < 6) {
-            start = start - more + 1;
+          if (diff > 3) {
+            const more = (diff / 2) - 1;
+            start = start - more;
           }
         }
 
