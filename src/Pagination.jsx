@@ -10,13 +10,16 @@ export default class Pagination extends Component {
     let next;
     let last;
     let first;
+    let pageNumbers = [];
     const {
       drinks,
       page,
       previousPage,
       nextPage,
       lastPage,
-      firstPage
+      firstPage,
+      pages,
+      visitPage
     } = this.props;
 
     if (page !== 1) {
@@ -61,10 +64,29 @@ export default class Pagination extends Component {
       )
     }
 
+    if (pages > 1) {
+      for (let i = 0; i < pages; i++) {
+        const p = i + 1;
+        let content;
+
+        if (p === page) {
+          content = <span key={p}>{p}</span>
+        } else {
+          content = (
+            <span key={p} onClick={(e) => visitPage(e, p)} className="cursor-pointer purple">
+              {p}
+            </span>
+          )
+        }
+        pageNumbers.push(content)
+      }
+    }
+
     return(
       <div>
         {first}
         {previous}
+        {pageNumbers}
         {last}
         {next}
       </div>

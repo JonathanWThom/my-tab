@@ -16,7 +16,7 @@ export default class Drinks extends Component {
       error: null,
       firstDate: "",
       lastDate: "",
-      page: 1
+      page: 1,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,6 +27,7 @@ export default class Drinks extends Component {
     this.previousPage = this.previousPage.bind(this);
     this.lastPage = this.lastPage.bind(this);
     this.firstPage = this.firstPage.bind(this);
+    this.getPages = this.getPages.bind(this);
   }
 
   componentDidMount() {
@@ -213,16 +214,25 @@ export default class Drinks extends Component {
   }
 
   lastPage() {
-    const { drinks } = this.state;
-    const last = Math.ceil(drinks.length / 10)
     this.setState({
-      page: last
+      page: this.getPages()
     })
   }
 
   firstPage() {
     this.setState({
       page: 1
+    })
+  }
+
+  getPages() {
+    const { drinks } = this.state;
+    return Math.ceil(drinks.length / 10);
+  }
+
+  visitPage = (event, newPage) => {
+    this.setState({
+      page: newPage
     })
   }
 
@@ -237,7 +247,7 @@ export default class Drinks extends Component {
       firstDate,
       lastDate,
       drinks,
-      page
+      page,
     } = this.state;
 
     return (
@@ -271,6 +281,8 @@ export default class Drinks extends Component {
             nextPage={this.nextPage}
             lastPage={this.lastPage}
             firstPage={this.firstPage}
+            pages={this.getPages()}
+            visitPage={this.visitPage}
           />
         </div>
       </div>

@@ -16,7 +16,7 @@ module.exports = (env) => {
           test: /\.(js|jsx)$/,
           exclude: /(node_modules|bower_components)/,
           loader: 'babel-loader',
-          options: { presets: ['env'] }
+          options: { presets: ['env'], plugins: ['transform-class-properties'] }
         },
         {
           test: /\.css$/,
@@ -38,7 +38,7 @@ module.exports = (env) => {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.DefinePlugin(envKeys)
+      new webpack.DefinePlugin(envKeys),
     ]
   }
 };
