@@ -1,0 +1,17 @@
+.pagination {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-areas: "left center right";
+}
+
+.pagination .left {
+  grid-area: left;
+}
+
+.pagination .center {
+  grid-area: center;
+}
+
+.pagination .right {
+  grid-area: right;
+}

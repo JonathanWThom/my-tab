@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./Pagination.css";
 
 export default class Pagination extends Component {
   constructor(props) {
@@ -121,20 +122,20 @@ export default class Pagination extends Component {
     }
 
     return(
-      <div className="text-align-center">
-        <div className="position-absolute">
+      <div className="text-align-center pagination">
+        <span className="left">
           {first}
           {previous}
-        </div>
-        <span className="position-absolute">
+        </span>
+        <span className="center">
           {moreLeft}
           {pageNumbers}
           {moreRight}
         </span>
-        <div>
+        <span className="right">
           {last}
           {next}
-        </div>
+        </span>
       </div>
     )
   }
