@@ -70,17 +70,20 @@ export default class Pagination extends Component {
       let start = 0;
       let range = pages;
 
-      // TODO: Clean this mess up.
       if (pages > 6) {
         start = page - 3;
         if (start < 1) {
           start = 0
-          range = start + 6;
         }
+        range = start + 5;
         const last = start + range;
+
         if (last > pages) {
           const more = start + range - pages;
-          start = start - more + 1;
+          range = pages - 1;
+          if (range < 6) {
+            start = start - more + 1;
+          }
         }
 
         if (start > 0) {
@@ -92,7 +95,7 @@ export default class Pagination extends Component {
         }
       }
 
-      for (let i = start; i < range; i++) {
+      for (let i = start; i <= range; i++) {
         const p = i + 1;
         let content;
 
