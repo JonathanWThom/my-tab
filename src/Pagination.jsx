@@ -14,6 +14,7 @@ export default class Pagination extends Component {
     let moreRight;
     let moreLeft;
     let pageNumbers = [];
+
     const {
       drinks,
       page,
@@ -22,7 +23,9 @@ export default class Pagination extends Component {
       lastPage,
       firstPage,
       pages,
-      visitPage
+      visitPage,
+      jumpBack,
+      jumpForward,
     } = this.props;
 
     if (page !== 1) {
@@ -88,11 +91,15 @@ export default class Pagination extends Component {
         }
 
         if (start > 0) {
-          moreLeft = <span>...</span>
+          moreLeft = (
+            <span onClick={jumpBack} className="cursor-pointer purple">...</span>
+          )
         }
 
         if (pages > end) {
-          moreRight = <span>...</span>
+          moreRight = (
+            <span onClick={jumpForward} className="cursor-pointer purple">...</span>
+          )
         }
       }
 

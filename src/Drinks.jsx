@@ -28,6 +28,9 @@ export default class Drinks extends Component {
     this.lastPage = this.lastPage.bind(this);
     this.firstPage = this.firstPage.bind(this);
     this.getPages = this.getPages.bind(this);
+    this.visitPage = this.visitPage.bind(this);
+    this.jumpBack = this.jumpBack.bind(this);
+    this.jumpForward = this.jumpForward.bind(this);
   }
 
   componentDidMount() {
@@ -230,9 +233,23 @@ export default class Drinks extends Component {
     return Math.ceil(drinks.length / 10);
   }
 
-  visitPage = (event, newPage) => {
+  visitPage(event, newPage) {
     this.setState({
       page: newPage
+    })
+  }
+
+  jumpBack() {
+    const { page } = this.state;
+    this.setState({
+      page: page - 3
+    })
+  }
+
+  jumpForward() {
+    const { page } = this.state;
+    this.setState({
+      page: page + 3
     })
   }
 
@@ -283,6 +300,8 @@ export default class Drinks extends Component {
             firstPage={this.firstPage}
             pages={this.getPages()}
             visitPage={this.visitPage}
+            jumpBack={this.jumpBack}
+            jumpForward={this.jumpForward}
           />
         </div>
       </div>
