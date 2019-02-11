@@ -68,35 +68,34 @@ export default class Pagination extends Component {
 
     if (pages > 1) {
       let start = 0;
-      let range = pages;
+      let end = pages;
 
       if (pages > 6) {
+        end = page + 3;
         start = page - 3;
-        if (start < 1) {
-          start = 0
-        }
-        range = start + 5;
-        const last = start + range;
 
-        if (last > pages) {
-          const diff = last - pages;
-          range = pages - 1;
-          if (diff > 3) {
-            const more = (diff / 2) - 1;
-            start = start - more;
-          }
+        if (start < 0) {
+          const diff = Math.abs(start);
+          start = start + diff;
+          end = end + diff
+        }
+
+        if (end > pages) {
+          const sub = end - pages;
+          end = end - sub;
+          start = start - sub;
         }
 
         if (start > 0) {
           moreLeft = <span>...</span>
         }
 
-        if (pages > last) {
+        if (pages > end) {
           moreRight = <span>...</span>
         }
       }
 
-      for (let i = start; i <= range; i++) {
+      for (let i = start; i < end; i++) {
         const p = i + 1;
         let content;
 
