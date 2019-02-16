@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import utils from "./utils";
+import moment from "moment";
 
 const DrinkForm = (props) => {
   const {
     handleSubmit, oz, handleInputChange, percent, imbibedOn,
   } = props;
+  const dateValue = imbibedOn || utils.formatForInput(moment.utc());;
 
   return (
     <div>
@@ -29,7 +32,7 @@ const DrinkForm = (props) => {
         />
         <br />
         <input
-          value={imbibedOn}
+          value={dateValue}
           onChange={handleInputChange}
           type="date"
           name="imbibedOn"
