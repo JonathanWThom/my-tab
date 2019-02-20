@@ -7,7 +7,7 @@ const DrinkForm = (props) => {
   const {
     handleSubmit, oz, handleInputChange, percent, imbibedOn,
   } = props;
-  const dateValue = imbibedOn || utils.formatForInput(moment.utc());;
+  const dateValue = imbibedOn || moment().format("YYYY-MM-DD");
 
   return (
     <div>
