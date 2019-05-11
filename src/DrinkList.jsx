@@ -25,7 +25,17 @@ export default class DrinkList extends Component {
   }
 
   render() {
-    const drinks = this.props.drinks.map(drink => (
+    const {
+      dateRange,
+      drinks,
+      total,
+      perDay,
+      handleDeleteDrink,
+      handleInputChange,
+      handleSortingFormSubmit,
+    } = this.props;
+
+    const drinksTable = drinks.map(drink => (
       <tr key={drink.id}>
         <td>{drink.name}</td>
         <td>{this.formattedImbibedOn(drink)}</td>
@@ -34,30 +44,29 @@ export default class DrinkList extends Component {
           {this.drinkPercent(drink)}%
         </td>
         <td>{this.roundToTwo(drink.stddrink)}</td>
-        <td className="delete" onClick={() => this.props.handleDeleteDrink(drink.id)}>x</td>
+        <td className="delete" onClick={() => handleDeleteDrink(drink.id)}>x</td>
       </tr>
     ));
     const totalCopy = (
       <p>
         <strong>Total Standard Drinks: </strong>
-        {this.roundToTwo(this.props.total)}
+        {this.roundToTwo(total)}
       </p>
     );
     const perDayCopy = (
       <p>
         <strong>Average Standard Drinks Per Day: </strong>
-        {this.roundToTwo(this.props.perDay)}
+        {this.roundToTwo(perDay)}
       </p>
     );
     let sortingForm;
-    if (this.props.drinks.length > 0) {
+    if (drinks.length > 0) {
       sortingForm = (
         <DrinkSortingForm
-          drinks={this.props.drinks}
-          handleInputChange={this.props.handleInputChange}
-          firstDate={this.props.firstDate}
-          lastDate={this.props.lastDate}
-          handleSortingFormSubmit={this.props.handleSortingFormSubmit}
+          drinks={drinks}
+          handleInputChange={handleInputChange}
+          dateRange={dateRange}
+          handleSortingFormSubmit={handleSortingFormSubmit}
         />
       );
     }
@@ -80,7 +89,7 @@ export default class DrinkList extends Component {
             </tr>
           </thead>
           <tbody>
-            { drinks }
+            { drinksTable }
           </tbody>
         </table>
       </div>

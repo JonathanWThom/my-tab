@@ -1,33 +1,36 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class DrinkSortingForm extends Component {
-  render(){
-    return(
-      <div>
-        <form onSubmit={this.props.handleSortingFormSubmit}>
-          <div className="row">
-            <div className="column">
-              <input
-                type="date"
-                value={this.props.firstDate}
-                onChange={this.props.handleInputChange}
-                name="firstDate"
-              />
-            </div>
-            <div className="column">
-              <input
-                type="date"
-                value={this.props.lastDate}
-                onChange={this.props.handleInputChange}
-                name="lastDate"
-              />
-            </div>
-            <div className="column">
-              <input type="submit" value="Update Range" />
-            </div>
+const DrinkSortingForm = (props) => {
+  const { dateRange, handleInputChange, handleSortingFormSubmit } = props;
+  const { start, end } = dateRange;
+
+  return(
+    <div>
+      <form onSubmit={handleSortingFormSubmit}>
+        <div className="row">
+          <div className="column">
+            <input
+              type="date"
+              value={start}
+              onChange={handleInputChange}
+              name="start"
+            />
           </div>
-        </form>
-      </div>
-    );
-  }
+          <div className="column">
+            <input
+              type="date"
+              value={end}
+              onChange={handleInputChange}
+              name="end"
+            />
+          </div>
+          <div className="column">
+            <input type="submit" value="Update Range" />
+          </div>
+        </div>
+      </form>
+    </div>
+  );
 }
+
+export default DrinkSortingForm;

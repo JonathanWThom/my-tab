@@ -6,6 +6,7 @@ import DrinkList from "./DrinkList";
 import Pagination from "./Pagination";
 import Drink from "./Drink";
 import update from 'immutability-helper';
+import DateRange from "./DateRange";
 
 export default class Drinks extends Component {
   constructor(props) {
@@ -14,14 +15,13 @@ export default class Drinks extends Component {
       loading: true,
       drink: new Drink(),
       error: null,
-      firstDate: "",
-      lastDate: "",
+      dateRange: new DateRange(),
       page: 1,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDrinkInputChange = this.handleDrinkInputChange.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleDateInputChange = this.handleDateInputChange.bind(this);
     this.handleSortingFormSubmit = this.handleSortingFormSubmit.bind(this);
     this.handleDeleteDrink = this.handleDeleteDrink.bind(this);
     this.nextPage = this.nextPage.bind(this);
@@ -39,11 +39,11 @@ export default class Drinks extends Component {
     this.getDrinks();
   }
 
+  // could DRY this and handleDateInputChange up
   handleDrinkInputChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
     const state = update(this.state, {
       drink: { $merge: { [name]: value } }
     });
@@ -61,26 +61,24 @@ export default class Drinks extends Component {
     }
   }
 
-  handleInputChange(event) {
+  handleDateInputChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    const state = update(this.state, {
+      dateRange: { $merge: { [name]: value } }
+    });
 
-    this.setState({
-      [name]: value
-    })
+    this.setState(state);
   }
 
   handleSortingFormSubmit(event) {
     event.preventDefault();
-
-    // TODO: Refactor firstDate/lastDate to use object, DateRange
-    // and then submit form with object state instead of form data
-    const target = event.target;
-    const data = new FormData(target);
+    const { dateRange } = this.state;
+    const { start, end } = dateRange;
     const params = {
-      start: data.get("firstDate"),
-      end: data.get("lastDate"),
+      start: start,
+      end: end,
     };
 
     this.getDrinks(params, true);
@@ -106,14 +104,14 @@ export default class Drinks extends Component {
   }
 
   handleDrinksData(data, sort) {
-    let firstDate;
-    let lastDate;
+    const { dateRange } = this.state;
+    let newDateRange = new DateRange();
+
     if (sort === true) {
-      firstDate = this.state.firstDate;
-      lastDate = this.state.lastDate;
+      newDateRange = dateRange;
     } else {
-      firstDate = this.getFirstDate(data.drinks);
-      lastDate = this.getLastDate(data.drinks);
+      dateRange.start = this.getFirstDate(data.drinks);
+      dateRange.end = this.getLastDate(data.drinks);
     }
 
     this.setState({
@@ -121,8 +119,7 @@ export default class Drinks extends Component {
       drinks: data.drinks,
       perDay: data.stddrinks_per_day,
       total: data.total_stddrinks,
-      firstDate,
-      lastDate,
+      dateRange: dateRange,
     });
   }
 
@@ -202,12 +199,12 @@ export default class Drinks extends Component {
   }
 
   handleDeleteDrinkData() {
-    const { firstDate, lastDate } = this.state;
-    const params = {
-      start: firstDate,
-      end: lastDate,
-    };
-    this.getDrinks(params);
+    const { dateRange } = this.state;
+    const { start, end } = dateRange;
+    this.getDrinks({
+      start: start,
+      end: end,
+    });
   }
 
   handleFormSubmit() {
@@ -283,12 +280,11 @@ export default class Drinks extends Component {
 
   renderDrinks() {
     const {
+      dateRange,
       drink,
       error,
       perDay,
       total,
-      firstDate,
-      lastDate,
       drinks,
       page,
     } = this.state;
@@ -310,9 +306,8 @@ export default class Drinks extends Component {
             drinks={this.paginatedDrinks()}
             perDay={perDay}
             total={total}
-            handleInputChange={this.handleInputChange}
-            firstDate={firstDate}
-            lastDate={lastDate}
+            handleInputChange={this.handleDateInputChange}
+            dateRange={dateRange}
             handleSortingFormSubmit={this.handleSortingFormSubmit}
             handleDeleteDrink={this.handleDeleteDrink}
           />
