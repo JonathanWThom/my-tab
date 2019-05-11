@@ -27,6 +27,7 @@ export default class DrinkList extends Component {
   render() {
     const drinks = this.props.drinks.map(drink => (
       <tr key={drink.id}>
+        <td>{drink.name}</td>
         <td>{this.formattedImbibedOn(drink)}</td>
         <td>{drink.oz}</td>
         <td>
@@ -70,6 +71,7 @@ export default class DrinkList extends Component {
         <table>
           <thead>
             <tr>
+              <th>Name</th>
               <th>Imbibed On</th>
               <th>Ounces</th>
               <th>Percent</th>

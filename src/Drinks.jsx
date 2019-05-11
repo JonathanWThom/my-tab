@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import moment from "moment";
 import utils from "./utils";
-import DrinkForm from "./DrinkForm.jsx";
-import DrinkList from "./DrinkList.jsx";
+import DrinkForm from "./DrinkForm";
+import DrinkList from "./DrinkList";
 import Pagination from "./Pagination";
+import Drink from "./Drink";
+import update from 'immutability-helper';
 
 export default class Drinks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      oz: "",
-      percent: "",
-      imbibedOn: "",
+      drink: new Drink(),
       error: null,
       firstDate: "",
       lastDate: "",
@@ -20,6 +20,7 @@ export default class Drinks extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDrinkInputChange = this.handleDrinkInputChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSortingFormSubmit = this.handleSortingFormSubmit.bind(this);
     this.handleDeleteDrink = this.handleDeleteDrink.bind(this);
@@ -28,6 +29,7 @@ export default class Drinks extends Component {
     this.lastPage = this.lastPage.bind(this);
     this.firstPage = this.firstPage.bind(this);
     this.getPages = this.getPages.bind(this);
+    this.getOptions = this.getOptions.bind(this);
     this.visitPage = this.visitPage.bind(this);
     this.jumpBack = this.jumpBack.bind(this);
     this.jumpForward = this.jumpForward.bind(this);
@@ -37,19 +39,43 @@ export default class Drinks extends Component {
     this.getDrinks();
   }
 
+  handleDrinkInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    const state = update(this.state, {
+      drink: { $merge: { [name]: value } }
+    });
+
+    this.setState(state);
+
+    if (name === "name" && this.getOptions().includes(value)) {
+      const data = this.state.drinks.find(drink => {
+        return drink.name === value;
+      });
+      const newState = update(this.state, {
+        drink: { $merge: { name: data.name, percent: data.percent * 100, oz: data.oz } }
+      });
+      this.setState(newState);
+    }
+  }
+
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
 
     this.setState({
-      [name]: value,
-    });
+      [name]: value
+    })
   }
 
   handleSortingFormSubmit(event) {
     event.preventDefault();
 
+    // TODO: Refactor firstDate/lastDate to use object, DateRange
+    // and then submit form with object state instead of form data
     const target = event.target;
     const data = new FormData(target);
     const params = {
@@ -132,11 +158,8 @@ export default class Drinks extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const target = event.target;
-    const data = new FormData(target);
-    const oz = data.get("oz");
-    const percent = data.get("percent");
-    const imbibedOn = data.get("imbibedOn");
+    const { drink } = this.state;
+    const { oz, percent, imbibedOn, name } = drink;
 
     if ([oz, percent, imbibedOn].includes("")) {
       this.setState({ error: "Please fill out all fields" });
@@ -145,8 +168,9 @@ export default class Drinks extends Component {
 
     const params = {
       oz,
-      percent,
+      percent: percent.toString(),
       imbibedOn: (new Date(imbibedOn)).toISOString(),
+      name,
     };
 
     fetch(`${process.env.API_URL}/drinks`, {
@@ -157,7 +181,7 @@ export default class Drinks extends Component {
       body: JSON.stringify(params),
     }).then(res => utils.handleStatus(res))
       .then(response => response.json())
-      .then(data => this.handleFormSubmit(target))
+      .then(data => this.handleFormSubmit())
       .catch(error => this.handleErrors(error));
   }
 
@@ -186,12 +210,10 @@ export default class Drinks extends Component {
     this.getDrinks(params);
   }
 
-  handleFormSubmit(target) {
-    this.setState({
-      oz: "",
-      percent: "",
-      imbibedOn: "",
-    });
+  handleFormSubmit() {
+    const drink = new Drink();
+    const state = update(this.state, { $set: { drink: drink } });
+    this.setState(state);
     this.getDrinks();
   }
 
@@ -253,12 +275,16 @@ export default class Drinks extends Component {
     })
   }
 
+  getOptions() {
+    const { drinks } = this.state;
+    const names = drinks.map(drink => drink.name).filter(Boolean);
+    return [...new Set(names)].sort((a, b) => a.localeCompare(b));
+  }
+
   renderDrinks() {
     const {
+      drink,
       error,
-      oz,
-      percent,
-      imbibedOn,
       perDay,
       total,
       firstDate,
@@ -273,11 +299,10 @@ export default class Drinks extends Component {
         <div className="column">
           <DrinkForm
             handleSubmit={this.handleSubmit}
-            handleInputChange={this.handleInputChange}
-            oz={oz}
-            percent={percent}
-            imbibedOn={imbibedOn}
+            handleInputChange={this.handleDrinkInputChange}
+            drink={drink}
             error={error}
+            options={this.getOptions()}
           />
         </div>
         <div className="column">
